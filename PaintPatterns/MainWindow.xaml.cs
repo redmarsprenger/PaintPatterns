@@ -23,7 +23,7 @@ namespace PaintPatterns
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string shape;
+        private string shape = "none";
         public Point InitialPosition;
         public Point SelectPos;
         private bool mouseButtonHeld;
@@ -33,6 +33,7 @@ namespace PaintPatterns
 
         Point firstPos;
         bool drawing = false;
+        Shape shapeDrawing;
 
         public MainWindow()
         {
@@ -68,13 +69,16 @@ namespace PaintPatterns
         {
             mouseButtonHeld = true;
             InitialPosition = e.GetPosition(Canvas);
-            if (e.Source != Canvas)
+            if (shape == "none")
             {
                 if (selectedElement != null)
                     draw.unselect(selectedElement);
-                selectedShape = e.Source as Shape;
-                selectedElement = e.Source as UIElement;
-                draw.select(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas);
+                if (e.Source != Canvas)
+                {
+                    selectedShape = e.Source as Shape;
+                    selectedElement = e.Source as UIElement;
+                    draw.select(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas);
+                }
             }
             else
             {
@@ -84,62 +88,47 @@ namespace PaintPatterns
                 selectedShape = null;
                 selectedElement = null;
 
-                if (shape == "ellipse")
+                if (drawing == false)
                 {
-                    if (drawing == false)
-                    {
-                        firstPos = InitialPosition;
-                        drawing = true;
-                    }
-                    else
+                    firstPos = InitialPosition;
+                    drawing = true;
+                    if (shape == "ellipse")
                     {
                         if (InitialPosition.X < firstPos.X && InitialPosition.Y > firstPos.Y)
                         {
-                            draw.ellipse((int)InitialPosition.X, (int)firstPos.Y, (int)firstPos.X - (int)InitialPosition.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
+                            shapeDrawing = draw.ellipse((int)InitialPosition.X, (int)firstPos.Y, (int)firstPos.X - (int)InitialPosition.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
                         }
                         else if (InitialPosition.X > firstPos.X && InitialPosition.Y < firstPos.Y)
                         {
-                            draw.ellipse((int)firstPos.X, (int)InitialPosition.Y, (int)InitialPosition.X - (int)firstPos.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
+                            shapeDrawing = draw.ellipse((int)firstPos.X, (int)InitialPosition.Y, (int)InitialPosition.X - (int)firstPos.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
                         }
                         else if (InitialPosition.X < firstPos.X && InitialPosition.Y < firstPos.Y)
                         {
-                            draw.ellipse((int)InitialPosition.X, (int)InitialPosition.Y, (int)firstPos.X - (int)InitialPosition.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
+                            shapeDrawing = draw.ellipse((int)InitialPosition.X, (int)InitialPosition.Y, (int)firstPos.X - (int)InitialPosition.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
                         }
                         else
                         {
-                            draw.ellipse((int)firstPos.X, (int)firstPos.Y, (int)InitialPosition.X - (int)firstPos.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
+                            shapeDrawing = draw.ellipse((int)firstPos.X, (int)firstPos.Y, (int)InitialPosition.X - (int)firstPos.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
                         }
-                        firstPos = new Point();
-                        drawing = false;
                     }
-                }
-                else if(shape == "rectangle")
-                {
-                    if (drawing == false)
-                    {
-                        firstPos = InitialPosition;
-                        drawing = true;
-                    }
-                    else
+                    else if(shape == "rectangle")
                     {
                         if (InitialPosition.X < firstPos.X && InitialPosition.Y > firstPos.Y)
                         {
-                            draw.rectangle((int)InitialPosition.X, (int)firstPos.Y, (int)firstPos.X - (int)InitialPosition.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
+                            shapeDrawing = draw.rectangle((int)InitialPosition.X, (int)firstPos.Y, (int)firstPos.X - (int)InitialPosition.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
                         }
                         else if (InitialPosition.X > firstPos.X && InitialPosition.Y < firstPos.Y)
                         {
-                            draw.rectangle((int)firstPos.X, (int)InitialPosition.Y, (int)InitialPosition.X - (int)firstPos.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
+                            shapeDrawing = draw.rectangle((int)firstPos.X, (int)InitialPosition.Y, (int)InitialPosition.X - (int)firstPos.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
                         }
                         else if (InitialPosition.X < firstPos.X && InitialPosition.Y < firstPos.Y)
                         {
-                            draw.rectangle((int)InitialPosition.X, (int)InitialPosition.Y, (int)firstPos.X - (int)InitialPosition.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
+                            shapeDrawing = draw.rectangle((int)InitialPosition.X, (int)InitialPosition.Y, (int)firstPos.X - (int)InitialPosition.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
                         }
                         else
                         {
-                            draw.rectangle((int)firstPos.X, (int)firstPos.Y, (int)InitialPosition.X - (int)firstPos.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
+                            shapeDrawing = draw.rectangle((int)firstPos.X, (int)firstPos.Y, (int)InitialPosition.X - (int)firstPos.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
                         }
-                        firstPos = new Point();
-                        drawing = false;
                     }
                 }
             }
@@ -149,25 +138,53 @@ namespace PaintPatterns
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
             mouseButtonHeld = false;
+            firstPos = new Point();
+            drawing = false;
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (mouseButtonHeld && selectedElement != null)
+            if (drawing)
+            {
+                if (e.GetPosition(Canvas).X < firstPos.X && e.GetPosition(Canvas).Y > firstPos.Y)
+                {
+                    shapeDrawing.SetValue(Canvas.LeftProperty, (double)e.GetPosition(Canvas).X);
+                    shapeDrawing.Width = (int)firstPos.X - (int)e.GetPosition(Canvas).X;
+                    shapeDrawing.Height = (int)e.GetPosition(Canvas).Y - (int)firstPos.Y;
+                }
+                else if (e.GetPosition(Canvas).X > firstPos.X && e.GetPosition(Canvas).Y < firstPos.Y)
+                {
+                    shapeDrawing.SetValue(Canvas.TopProperty, (double)e.GetPosition(Canvas).Y);
+                    shapeDrawing.Width = (int)e.GetPosition(Canvas).X - (int)firstPos.X;
+                    shapeDrawing.Height = (int)firstPos.Y - (int)e.GetPosition(Canvas).Y;
+                }
+                else if (e.GetPosition(Canvas).X < firstPos.X && e.GetPosition(Canvas).Y < firstPos.Y)
+                {
+                    shapeDrawing.SetValue(Canvas.LeftProperty, (double)e.GetPosition(Canvas).X);
+                    shapeDrawing.SetValue(Canvas.TopProperty, (double)e.GetPosition(Canvas).Y);
+                    shapeDrawing.Width = (int)firstPos.X - (int)e.GetPosition(Canvas).X;
+                    shapeDrawing.Height = (int)firstPos.Y - (int)e.GetPosition(Canvas).Y;
+                }
+                else if (e.GetPosition(Canvas).X > firstPos.X && e.GetPosition(Canvas).Y > firstPos.Y)
+                {
+                    shapeDrawing.Width = (int)e.GetPosition(Canvas).X - (int)firstPos.X;
+                    shapeDrawing.Height = (int)e.GetPosition(Canvas).Y - (int)firstPos.Y;
+                }
+            }
+            else if (mouseButtonHeld && selectedElement != null)
             {
                 Point position = Mouse.GetPosition(Canvas);
                 draw.move(selectedElement, e.GetPosition(Canvas));
             }
         }
-
     }
-
 
     class draw
     {
         private static List<Shape> Shapes = new List<Shape>();
         private static Point Diff;
-        public static void ellipse(int x, int y, int width, int height, Canvas cv)
+
+        public static Ellipse ellipse(int x, int y, int width, int height, Canvas cv)
         {
             Ellipse ellipse = new Ellipse()
             {
@@ -179,13 +196,14 @@ namespace PaintPatterns
             };
 
             cv.Children.Add(ellipse);
-
             ellipse.SetValue(Canvas.LeftProperty, (double)x);
             ellipse.SetValue(Canvas.TopProperty, (double)y);
 
             Shapes.Add(ellipse);
+            return ellipse;
         }
-        public static void rectangle(int x, int y, int width, int height, Canvas cv)
+
+        public static Rectangle rectangle(int x, int y, int width, int height, Canvas cv)
         {
             Rectangle rectangle = new Rectangle()
             {
@@ -201,6 +219,7 @@ namespace PaintPatterns
             rectangle.SetValue(Canvas.TopProperty, (double)y);
 
             Shapes.Add(rectangle);
+            return rectangle;
         }
 
         public static void move(UIElement selectedElement, Point getPosition)
@@ -238,6 +257,5 @@ namespace PaintPatterns
 
             return result;
         }
-
     }
 }
