@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -29,8 +30,6 @@ namespace PaintPatterns
 
         UIElement selectedElement = null;
         Shape selectedShape;
-
-        bool circle;
 
         public MainWindow()
         {
@@ -108,12 +107,10 @@ namespace PaintPatterns
                 if (shape == "ellipse")
                 {
                     draw.ellipse((int)InitialPosition.X, (int)InitialPosition.Y, 50, 30, Canvas);
-                    circle = true;
                 }
                 else if(shape == "rectangle")
                 {
                     draw.rectangle((int)InitialPosition.X, (int)InitialPosition.Y, 50, 30, Canvas);
-                    circle = false;
                 }
             }
 
@@ -129,7 +126,7 @@ namespace PaintPatterns
             if (mouseButtonHeld && selectedElement != null)
             {
                 Point position = Mouse.GetPosition(Canvas);
-                draw.move(selectedElement, e.GetPosition(Canvas), InitialPosition);
+                draw.move(selectedElement, e.GetPosition(Canvas));
             }
         }
 
@@ -148,7 +145,7 @@ namespace PaintPatterns
                 Height = height,
                 Stroke = Brushes.Black,
                 StrokeThickness = 2,
-                Fill = Brushes.Red
+                Fill = randColor()
             };
 
             cv.Children.Add(ellipse);
@@ -166,7 +163,7 @@ namespace PaintPatterns
                 Height = height,
                 Stroke = Brushes.Black,
                 StrokeThickness = 2,
-                Fill = Brushes.Red
+                Fill = randColor()
             };
 
             cv.Children.Add(rectangle);
@@ -178,7 +175,6 @@ namespace PaintPatterns
 
         public static void move(UIElement selectedElement, Point getPosition)
         {
-
             selectedElement.SetValue(Canvas.LeftProperty, (double)getPosition.X - Diff.X);
             selectedElement.SetValue(Canvas.TopProperty, (double)getPosition.Y - Diff.Y);
         }
@@ -191,9 +187,26 @@ namespace PaintPatterns
 
             selectedElement.GetType().GetProperty("Stroke").SetValue(selectedElement, Brushes.Blue);
         }
+
         public static void unselect(UIElement selectedElement)
         {
             selectedElement.GetType().GetProperty("Stroke").SetValue(selectedElement, Brushes.Black);
+        }
+
+        public static Brush randColor()
+        {
+            Brush result = Brushes.Transparent;
+
+            Random rnd = new Random();
+
+            Type brushesType = typeof(Brushes);
+
+            PropertyInfo[] properties = brushesType.GetProperties();
+
+            int random = rnd.Next(properties.Length);
+            result = (Brush)properties[random].GetValue(null, null);
+
+            return result;
         }
 
     }
