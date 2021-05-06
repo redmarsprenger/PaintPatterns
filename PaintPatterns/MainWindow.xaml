@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PaintPatterns"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        MouseUp="Window_MouseUp">
     <Grid Background="AliceBlue">
-        <Canvas Height="400" Width="700" Background="White" Margin="10,10,83.6,10" Name="Canvas">
+        <Canvas Height="400" Width="700" Background="White" Margin="10,10,83.6,10" Name="Canvas" MouseMove="Canvas_MouseMove"  MouseDown="Canvas_MouseDown">
 
         </Canvas>
-        <Button Width="80" Height="20" HorizontalAlignment="Right" Name="RectangleBtn" Content="Rectangle" Margin="0,-200,3.6,0" Click="RectangleBtn_Click" />
-        <Button Width="80" Height="20" HorizontalAlignment="Right" Name="TriangleBtn" Content="Triangle" Margin="0,-150,3.6,0" Click="TriangleBtn_Click"/>
-        <Button Width="80" Height="20" HorizontalAlignment="Right" Name="CircleBtn" Content="Circle" Click="CircleBtn_Click" Margin="0,-100,3.6,0"/>
+        <Button Width="80" Height="20" HorizontalAlignment="Right" Name="NoneBtn" Content="None" Margin="0,-200,3.6,0" Click="NoneBtn_Click" />
+        <Button Width="80" Height="20" HorizontalAlignment="Right" Name="RectangleBtn" Content="Rectangle" Margin="0,-150,3.6,0" Click="RectangleBtn_Click" />
+        <Button Width="80" Height="20" HorizontalAlignment="Right" Name="EllipseBtn" Content="Ellipse" Click="EllipseBtn_Click" Margin="0,-100,3.6,0"/>
     </Grid>
 </Window>
