@@ -86,12 +86,6 @@ namespace PaintPatterns
 
                 if (shape == "ellipse")
                 {
-                    draw.ellipse((int)InitialPosition.X, (int)InitialPosition.Y, 50, 30, Canvas);
-                }
-                else if(shape == "rectangle")
-                {
-                    draw.rectangle((int)InitialPosition.X, (int)InitialPosition.Y, 50, 30, Canvas);
-
                     if (drawing == false)
                     {
                         firstPos = InitialPosition;
