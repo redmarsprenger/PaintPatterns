@@ -6,7 +6,12 @@
         xmlns:local="clr-namespace:PaintPatterns"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+    <Grid Background="AliceBlue">
+        <Canvas Height="400" Width="700" Background="White" Margin="10,10,83.6,10">
+
+        </Canvas>
+        <Button Margin="712,26,-0.4,375" Name="RectangleBtn" Content="Rectangle"/>
+        <Button Margin="712,54,-0.4,347" Name="TriangleBtn" Content="Triangle"/>
+        <Button Margin="712,78,-0.4,323" Name="CircleBtn" Content="Circle"/>
     </Grid>
 </Window>
