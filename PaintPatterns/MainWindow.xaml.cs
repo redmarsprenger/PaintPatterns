@@ -25,6 +25,27 @@ namespace PaintPatterns
             InitializeComponent();
 
             Ellipse ellipse = new Ellipse();
+
+            Line line = new Line();
+            line.Stroke = System.Windows.Media.Brushes.Blue;
+            line.X1 = 25;
+            line.X2 = 100;
+            line.Y1 = 30;
+            line.Y2 = 111;
+            line.StrokeThickness = 2;
+
+            //Canvas.Children.Add(line);
+
+            ellipse.Width = 50;
+            ellipse.Height = 50;
+            ellipse.Margin = new Thickness(25,30,0,0);
+            ellipse.Width = line.X2 - line.X1;
+            ellipse.Height = line.Y2 - line.Y1;
+            ellipse.StrokeThickness = 2;
+            ellipse.Stroke = System.Windows.Media.Brushes.Black;
+
+            Canvas.Children.Add(ellipse);
+            Canvas.Children.Add(line);
         }
 
         private void RectangleBtn_Click(object sender, RoutedEventArgs e)
