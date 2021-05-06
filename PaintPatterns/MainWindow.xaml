@@ -14,5 +14,6 @@
         <Button Width="80" Height="20" HorizontalAlignment="Right" Name="NoneBtn" Content="None" Margin="0,-200,3.6,0" Click="NoneBtn_Click" />
         <Button Width="80" Height="20" HorizontalAlignment="Right" Name="RectangleBtn" Content="Rectangle" Margin="0,-150,3.6,0" Click="RectangleBtn_Click" />
         <Button Width="80" Height="20" HorizontalAlignment="Right" Name="EllipseBtn" Content="Ellipse" Click="EllipseBtn_Click" Margin="0,-100,3.6,0"/>
+
     </Grid>
 </Window>

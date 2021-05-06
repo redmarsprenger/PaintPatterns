@@ -24,6 +24,7 @@ namespace PaintPatterns
     {
         private string shape;
         public Point InitialPosition;
+        public Point SelectPos;
         private bool mouseButtonHeld;
 
         UIElement selectedElement = null;
@@ -94,7 +95,7 @@ namespace PaintPatterns
                     draw.unselect(selectedElement);
                 selectedShape = e.Source as Shape;
                 selectedElement = e.Source as UIElement;
-                draw.select(selectedElement);
+                draw.select(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas);
             }
             else
             {
@@ -128,15 +129,17 @@ namespace PaintPatterns
             if (mouseButtonHeld && selectedElement != null)
             {
                 Point position = Mouse.GetPosition(Canvas);
-                draw.move(selectedElement, e.GetPosition(Canvas));
+                draw.move(selectedElement, e.GetPosition(Canvas), InitialPosition);
             }
         }
+
     }
 
 
     class draw
     {
         private static List<Shape> Shapes = new List<Shape>();
+        private static Point Diff;
         public static void ellipse(int x, int y, int width, int height, Canvas cv)
         {
             Ellipse ellipse = new Ellipse()
@@ -175,17 +178,23 @@ namespace PaintPatterns
 
         public static void move(UIElement selectedElement, Point getPosition)
         {
-            selectedElement.SetValue(Canvas.LeftProperty, (double)getPosition.X);
-            selectedElement.SetValue(Canvas.TopProperty, (double)getPosition.Y);
+
+            selectedElement.SetValue(Canvas.LeftProperty, (double)getPosition.X - Diff.X);
+            selectedElement.SetValue(Canvas.TopProperty, (double)getPosition.Y - Diff.Y);
         }
 
-        public static void select(UIElement selectedElement)
+        public static void select(UIElement selectedElement, Point getPosition, Point InitialPosition, Canvas canvas)
         {
+            Point relativePoint = selectedElement.TransformToAncestor(canvas).Transform(new Point(0, 0));
+            Diff.X = InitialPosition.X - relativePoint.X;
+            Diff.Y = InitialPosition.Y - relativePoint.Y;
+
             selectedElement.GetType().GetProperty("Stroke").SetValue(selectedElement, Brushes.Blue);
         }
         public static void unselect(UIElement selectedElement)
         {
             selectedElement.GetType().GetProperty("Stroke").SetValue(selectedElement, Brushes.Black);
         }
+
     }
 }
