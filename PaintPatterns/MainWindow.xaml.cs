@@ -23,6 +23,23 @@ namespace PaintPatterns
         public MainWindow()
         {
             InitializeComponent();
+
+            Ellipse ellipse = new Ellipse();
+        }
+
+        private void RectangleBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TriangleBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CircleBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

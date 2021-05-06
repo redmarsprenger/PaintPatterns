@@ -10,8 +10,8 @@
         <Canvas Height="400" Width="700" Background="White" Margin="10,10,83.6,10" Name="Canvas">
 
         </Canvas>
-        <Button Margin="712,26,-0.4,375" Name="RectangleBtn" Content="Rectangle"/>
-        <Button Margin="712,54,-0.4,347" Name="TriangleBtn" Content="Triangle"/>
-        <Button Margin="712,78,-0.4,323" Name="CircleBtn" Content="Circle"/>
+        <Button Width="80" Height="20" HorizontalAlignment="Right" Name="RectangleBtn" Content="Rectangle" Margin="0,-200,3.6,0" Click="RectangleBtn_Click" />
+        <Button Width="80" Height="20" HorizontalAlignment="Right" Name="TriangleBtn" Content="Triangle" Margin="0,-150,3.6,0" Click="TriangleBtn_Click"/>
+        <Button Width="80" Height="20" HorizontalAlignment="Right" Name="CircleBtn" Content="Circle" Click="CircleBtn_Click" Margin="0,-100,3.6,0"/>
     </Grid>
 </Window>
