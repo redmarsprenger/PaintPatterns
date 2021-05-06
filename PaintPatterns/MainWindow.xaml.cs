@@ -31,33 +31,13 @@ namespace PaintPatterns
         UIElement selectedElement = null;
         Shape selectedShape;
 
+        Point firstPos;
+        bool drawing = false;
+
         public MainWindow()
         {
             InitializeComponent();
             NoneBtn.IsEnabled = false;
-        
-            Ellipse ellipse = new Ellipse();
-
-            Line line = new Line();
-            line.Stroke = System.Windows.Media.Brushes.Blue;
-            line.X1 = 25;
-            line.X2 = 100;
-            line.Y1 = 30;
-            line.Y2 = 111;
-            line.StrokeThickness = 2;
-
-            //Canvas.Children.Add(line);
-
-            ellipse.Width = 50;
-            ellipse.Height = 50;
-            ellipse.Margin = new Thickness(25,30,0,0);
-            ellipse.Width = line.X2 - line.X1;
-            ellipse.Height = line.Y2 - line.Y1;
-            ellipse.StrokeThickness = 2;
-            ellipse.Stroke = System.Windows.Media.Brushes.Black;
-
-            Canvas.Children.Add(ellipse);
-            Canvas.Children.Add(line);
         }
          
         private void NoneBtn_Click(object sender, RoutedEventArgs e)
@@ -111,6 +91,62 @@ namespace PaintPatterns
                 else if(shape == "rectangle")
                 {
                     draw.rectangle((int)InitialPosition.X, (int)InitialPosition.Y, 50, 30, Canvas);
+
+                    if (drawing == false)
+                    {
+                        firstPos = InitialPosition;
+                        drawing = true;
+                    }
+                    else
+                    {
+                        if (InitialPosition.X < firstPos.X && InitialPosition.Y > firstPos.Y)
+                        {
+                            draw.ellipse((int)InitialPosition.X, (int)firstPos.Y, (int)firstPos.X - (int)InitialPosition.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
+                        }
+                        else if (InitialPosition.X > firstPos.X && InitialPosition.Y < firstPos.Y)
+                        {
+                            draw.ellipse((int)firstPos.X, (int)InitialPosition.Y, (int)InitialPosition.X - (int)firstPos.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
+                        }
+                        else if (InitialPosition.X < firstPos.X && InitialPosition.Y < firstPos.Y)
+                        {
+                            draw.ellipse((int)InitialPosition.X, (int)InitialPosition.Y, (int)firstPos.X - (int)InitialPosition.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
+                        }
+                        else
+                        {
+                            draw.ellipse((int)firstPos.X, (int)firstPos.Y, (int)InitialPosition.X - (int)firstPos.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
+                        }
+                        firstPos = new Point();
+                        drawing = false;
+                    }
+                }
+                else if(shape == "rectangle")
+                {
+                    if (drawing == false)
+                    {
+                        firstPos = InitialPosition;
+                        drawing = true;
+                    }
+                    else
+                    {
+                        if (InitialPosition.X < firstPos.X && InitialPosition.Y > firstPos.Y)
+                        {
+                            draw.rectangle((int)InitialPosition.X, (int)firstPos.Y, (int)firstPos.X - (int)InitialPosition.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
+                        }
+                        else if (InitialPosition.X > firstPos.X && InitialPosition.Y < firstPos.Y)
+                        {
+                            draw.rectangle((int)firstPos.X, (int)InitialPosition.Y, (int)InitialPosition.X - (int)firstPos.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
+                        }
+                        else if (InitialPosition.X < firstPos.X && InitialPosition.Y < firstPos.Y)
+                        {
+                            draw.rectangle((int)InitialPosition.X, (int)InitialPosition.Y, (int)firstPos.X - (int)InitialPosition.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
+                        }
+                        else
+                        {
+                            draw.rectangle((int)firstPos.X, (int)firstPos.Y, (int)InitialPosition.X - (int)firstPos.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
+                        }
+                        firstPos = new Point();
+                        drawing = false;
+                    }
                 }
             }
 
