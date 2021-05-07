@@ -80,6 +80,14 @@ namespace PaintPatterns
                     draw.select(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas);
                 }
             }
+            else if (shape == "red")
+            {
+                if (e.Source != Canvas)
+                {
+                    selectedShape = e.Source as Shape;
+                    selectedShape = new RedDecorator(selectedShape).ReturnShape();
+                }
+            }
             else
             {
                 if(selectedElement != null)
@@ -177,6 +185,15 @@ namespace PaintPatterns
                 draw.move(selectedElement, e.GetPosition(Canvas));
             }
         }
+
+        private void Change2Red_Click(object sender, RoutedEventArgs e)
+        {
+            shape = "red";
+            Change2Red.IsEnabled = false;
+            NoneBtn.IsEnabled = true;
+            RectangleBtn.IsEnabled = true;
+            EllipseBtn.IsEnabled = true;
+        }
     }
 
     class draw
@@ -193,7 +210,7 @@ namespace PaintPatterns
                 Stroke = Brushes.Black,
                 StrokeThickness = 2,
                 Fill = randColor()
-            };
+            };            
 
             cv.Children.Add(ellipse);
             ellipse.SetValue(Canvas.LeftProperty, (double)x);
