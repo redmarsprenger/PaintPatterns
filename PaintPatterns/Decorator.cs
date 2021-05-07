@@ -11,19 +11,20 @@ namespace PaintPatterns
     public abstract class ColorDecorator
     {
         public Shape SelectedShape;
+
+        public abstract Shape ReturnShape();
     }
 
     public class RedDecorator : ColorDecorator
     {
-        Shape SelectedShape;
-
         public RedDecorator(Shape selectedShape)
         {
             SelectedShape = selectedShape;
-            SelectedShape.Stroke = Brushes.Red;
+            //SelectedShape.Stroke = Brushes.Red;
+            SelectedShape.Stroke = draw.randColor();
         }
 
-        public Shape ReturnShape()
+        public override Shape ReturnShape()
         {
             return SelectedShape;
         }

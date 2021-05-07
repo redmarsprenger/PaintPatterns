@@ -196,7 +196,7 @@ namespace PaintPatterns
         }
     }
 
-    class draw
+    public class draw
     {
         private static List<Shape> Shapes = new List<Shape>();
         private static Point Diff;
