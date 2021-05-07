@@ -20,8 +20,6 @@ namespace PaintPatterns
         public RedDecorator(Shape selectedShape)
         {
             SelectedShape = selectedShape;
-            //SelectedShape.Stroke = Brushes.Red;
-            //SelectedShape.Stroke = draw.randColor();
             SelectedShape.Fill = draw.randColor();
         }
 
