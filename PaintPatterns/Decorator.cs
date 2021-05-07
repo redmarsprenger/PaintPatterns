@@ -21,7 +21,8 @@ namespace PaintPatterns
         {
             SelectedShape = selectedShape;
             //SelectedShape.Stroke = Brushes.Red;
-            SelectedShape.Stroke = draw.randColor();
+            //SelectedShape.Stroke = draw.randColor();
+            SelectedShape.Fill = draw.randColor();
         }
 
         public override Shape ReturnShape()

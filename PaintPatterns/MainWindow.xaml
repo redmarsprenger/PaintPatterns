@@ -21,7 +21,7 @@
         <Button Width="70" Height="50" Name="EllipseBtn" Content="Ellipse" Click="EllipseBtn_Click"  
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="13" Margin="0,0,10,10"
                 />
-        <Button Width="70" Height="50" Name="Change2Red" Content="change2red" Click="Change2Red_Click"
+        <Button Width="70" Height="50" Name="ChangeColor" Content="ChangeColor" Click="ChangeColor_Click"
             HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="13" Margin="0,298,11.6,142.4"
                 />
 

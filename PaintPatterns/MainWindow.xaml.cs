@@ -211,13 +211,12 @@ namespace PaintPatterns
             }
         }
 
-        private void Change2Red_Click(object sender, RoutedEventArgs e)
+        private void ChangeColor_Click(object sender, RoutedEventArgs e)
         {
-            shape = "red";
-            Change2Red.IsEnabled = false;
-            NoneBtn.IsEnabled = true;
-            RectangleBtn.IsEnabled = true;
-            EllipseBtn.IsEnabled = true;
+            if (shape == "none" && selectedShape != null)
+            {
+                selectedShape = new RedDecorator(selectedShape).ReturnShape();
+            }
         }
     }
 
