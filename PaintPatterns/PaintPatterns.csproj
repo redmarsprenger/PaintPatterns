@@ -59,10 +59,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Actions.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CommandInvoker.cs" />
+    <Compile Include="Command\Actions.cs" />
+    <Compile Include="Command\Draw.cs" />
+    <Compile Include="Command\Move.cs" />
+    <Compile Include="Command\Resize.cs" />
     <Compile Include="Decorator.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -96,7 +102,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Command\" />
     <Folder Include="Composite\" />
     <Folder Include="Decorator\" />
     <Folder Include="Singleton\" />

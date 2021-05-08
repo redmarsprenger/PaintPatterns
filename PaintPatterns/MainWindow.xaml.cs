@@ -23,6 +23,7 @@ namespace PaintPatterns
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly CommandInvoker invoker;
         private string shape = "none";
         public Point InitialPosition;
         public Point SelectPos;
@@ -42,6 +43,8 @@ namespace PaintPatterns
         {
             InitializeComponent();
             NoneBtn.IsEnabled = false;
+            invoker = CommandInvoker.GetInstance();
+            invoker.MainWindow = this;
         }
          
         private void NoneBtn_Click(object sender, RoutedEventArgs e)
