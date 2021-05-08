@@ -35,4 +35,19 @@ namespace PaintPatterns.Command
         }
     }
 
+    public class invoker
+    {
+        LogCommand command;
+
+        public invoker(LogCommand logCommand)
+        {
+            command = logCommand;
+        }
+
+        public void Log()
+        {
+            command.Execute();
+        }
+    }
+    // invoker(LogCommand(string of action));
 }
