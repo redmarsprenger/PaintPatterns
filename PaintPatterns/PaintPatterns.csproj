@@ -95,5 +95,13 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Command\" />
+    <Folder Include="Composite\" />
+    <Folder Include="Decorator\" />
+    <Folder Include="Singleton\" />
+    <Folder Include="Strategy\" />
+    <Folder Include="Visitor\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
