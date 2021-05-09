@@ -14,9 +14,9 @@ namespace PaintPatterns
 
         public void Resize()
         {
-            var cmd = new Resize();
-            cmd.Execute();
-            ActionsUndo.Push(cmd);
+            //var cmd = new Resize();
+            //cmd.Execute();
+            //ActionsUndo.Push(cmd);
         }
 
         public void Move()

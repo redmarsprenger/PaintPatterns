@@ -7,7 +7,7 @@ using System.Windows.Shapes;
 
 namespace PaintPatterns.Composite
 {
-    class CompositeShapes
+    public class CompositeShapes
     {
         private List<Group> ChildElements = new List<Group>();
 
@@ -25,9 +25,13 @@ namespace PaintPatterns.Composite
             ChildElements.Add(group);
         }
     }
-    class Group
+    public class Group
     {
         List<Part> Parts;
+        public Group()
+        {
+            Parts = new List<Part>();
+        }
 
         public void Add(Part part)
         {
@@ -40,7 +44,7 @@ namespace PaintPatterns.Composite
 
     }
 
-    class Part
+    public class Part
     {
         private Shape Shape = null;
         private Group Group = null;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PaintPatterns.Composite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -36,12 +37,16 @@ namespace PaintPatterns
         bool drawing = false;
         Shape shapeDrawing;
 
+        CompositeShapes composite;
+
         public MainWindow()
         {
             InitializeComponent();
             NoneBtn.IsEnabled = false;
             invoker = CommandInvoker.GetInstance();
             invoker.MainWindow = this;
+
+            composite = new CompositeShapes();
         }
          
         private void NoneBtn_Click(object sender, RoutedEventArgs e)
@@ -136,6 +141,8 @@ namespace PaintPatterns
                                 shapeDrawing = draw.rectangle((int)firstPos.X, (int)firstPos.Y, (int)InitialPosition.X - (int)firstPos.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
                             }
                         }
+                        //after the shap is drawn add it to the composite
+                        composite.Add(shapeDrawing);
                     }
                 }
             }

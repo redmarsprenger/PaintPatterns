@@ -14,20 +14,20 @@ namespace PaintPatterns.Command
         string shape;
         public Resize(Ellipse selectedShape)
         {
-            width = (int)selectedShape.Width;
-            height = (int)selectedShape.Height;
-            x = (int)selectedShape.GetValue(Canvas.LeftProperty);
-            y = (int)selectedShape.GetValue(Canvas.TopProperty);
-            shape = "ellipse";
+            //width = (int)selectedShape.Width;
+            //height = (int)selectedShape.Height;
+            //x = (int)selectedShape.GetValue(Canvas.LeftProperty);
+            //y = (int)selectedShape.GetValue(Canvas.TopProperty);
+            //shape = "ellipse";
         }
 
         public Resize(Rectangle selectedShape)
         {
-            width = (int)selectedShape.Width;
-            height = (int)selectedShape.Height;
-            x = (int)selectedShape.GetValue(Canvas.LeftProperty);
-            y = (int)selectedShape.GetValue(Canvas.TopProperty);
-            shape = "rectangle";
+            //width = (int)selectedShape.Width;
+            //height = (int)selectedShape.Height;
+            //x = (int)selectedShape.GetValue(Canvas.LeftProperty);
+            //y = (int)selectedShape.GetValue(Canvas.TopProperty);
+            //shape = "rectangle";
         }
 
         public void Execute()

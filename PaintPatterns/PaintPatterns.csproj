@@ -69,6 +69,7 @@
     <Compile Include="Command\Draw.cs" />
     <Compile Include="Command\Move.cs" />
     <Compile Include="Command\Resize.cs" />
+    <Compile Include="Composite\CompositeShapes.cs" />
     <Compile Include="Decorator.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -102,7 +103,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Composite\" />
     <Folder Include="Decorator\" />
     <Folder Include="Singleton\" />
     <Folder Include="Strategy\" />
