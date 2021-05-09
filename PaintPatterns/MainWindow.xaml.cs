@@ -36,9 +36,6 @@ namespace PaintPatterns
         bool drawing = false;
         Shape shapeDrawing;
 
-        List<String> UndoList;
-        List<String> RedoList;
-
         public MainWindow()
         {
             InitializeComponent();
