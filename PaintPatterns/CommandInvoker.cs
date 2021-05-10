@@ -24,6 +24,7 @@ namespace PaintPatterns
             {
                 ActionsUndo.Push(cmd);
                 ActionsRedo.Clear();
+                //updates the Composite cloned element
                 composite.Update(selectedElement);
             }
         }
@@ -36,6 +37,7 @@ namespace PaintPatterns
             {
                 ActionsUndo.Push(cmd);
                 ActionsRedo.Clear();
+                //updates the Composite cloned element
                 composite.Update(selectedElement);
             }
         }
@@ -57,16 +59,19 @@ namespace PaintPatterns
                 string uid = command.GetElement().Uid;
                 bool entry = false;
 
+                //go through actions to see if there are other entries or if it is the last one
                 foreach (var item in ActionsUndo)
                 {
                     if (item.GetShape().Uid == uid)
                     {
+                        //updates the Composite cloned element
                         composite.Update(command.GetShape());
                         entry = true;
                     }
                 }
-                if (entry == false)
+                if (entry == false)//if no entry is left remove it
                 {
+                    //removes the Composite cloned element
                     composite.Remove(uid);
                 }
             }
@@ -80,20 +85,13 @@ namespace PaintPatterns
                 ICommand command = ActionsRedo.Pop();
                 command.Redo();
                 ActionsUndo.Push(command);
+                //updates the Composite cloned element
                 composite.Update(selectedElement);
             }
         }
         public static CommandInvoker GetInstance()
         {
             return Instance;
-        }
-    }
-
-    internal class Drawww
-    {
-        public Drawww(int round, int i, Shape shape)
-        {
-            throw new NotImplementedException();
         }
     }
 }
