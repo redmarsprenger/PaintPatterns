@@ -40,16 +40,10 @@ namespace PaintPatterns
             }
         }
 
-        public void Draw(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, bool done, CompositeShapes composite)
+        public void Draw(UIElement selectedElement, Point getPosition, Point initialPosition, Canvas canvas, Shape shapeDrawing, Shape shape)
         {
-            var cmd = new Draw(selectedElement, getPosition, RelativePoint, initialPosition, canvas, shapeDrawing, done);
+            var cmd = new Draw(selectedElement, getPosition, initialPosition, canvas, shapeDrawing, shape);
             cmd.Execute();
-            if (done)
-            {
-                ActionsUndo.Push(cmd);
-                ActionsRedo.Clear();
-                composite.Add(shapeDrawing);
-            }
         }
         
         public void Undo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, CompositeShapes composite)
@@ -88,6 +82,18 @@ namespace PaintPatterns
                 ActionsUndo.Push(command);
                 composite.Update(selectedElement);
             }
+        }
+        public static CommandInvoker GetInstance()
+        {
+            return Instance;
+        }
+    }
+
+    internal class Drawww
+    {
+        public Drawww(int round, int i, Shape shape)
+        {
+            throw new NotImplementedException();
         }
     }
 }

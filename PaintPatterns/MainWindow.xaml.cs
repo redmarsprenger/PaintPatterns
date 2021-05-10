@@ -1,22 +1,11 @@
 ﻿using PaintPatterns.Composite;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using PaintPatterns.Command;
+using PaintPatterns.StrategyPattern;
 
 namespace PaintPatterns
 {
@@ -28,16 +17,18 @@ namespace PaintPatterns
         private readonly CommandInvoker invoker;
         private string shape = "none";
         public Point InitialPosition;
+        public Point MousePos;
         public Point SelectPos;
         private bool mouseButtonHeld;
 
-        UIElement selectedElement = null;
+        public UIElement selectedElement = null;
         Shape selectedShape;
+        IStrategy strategy;
 
         Point firstPos;
         bool drawing = false;
         bool moving = false;
-        Shape shapeDrawing;
+        public Shape shapeDrawing;
 
         CompositeShapes composite;
 
@@ -52,9 +43,10 @@ namespace PaintPatterns
         {
             InitializeComponent();
             NoneBtn.IsEnabled = false;
-            invoker = new CommandInvoker {MainWindow = this};
 
             composite = new CompositeShapes();
+            invoker = CommandInvoker.GetInstance();
+            invoker.MainWindow = this;
         }
          
         private void NoneBtn_Click(object sender, RoutedEventArgs e)
@@ -68,6 +60,7 @@ namespace PaintPatterns
         private void RectangleBtn_Click(object sender, RoutedEventArgs e)
         {
             shape = "rectangle";
+            strategy = new StrategyPattern.Rectangle();
             NoneBtn.IsEnabled = true;
             RectangleBtn.IsEnabled = false;
             EllipseBtn.IsEnabled = true;
@@ -76,6 +69,7 @@ namespace PaintPatterns
         private void EllipseBtn_Click(object sender, RoutedEventArgs e)
         {
             shape = "ellipse";
+            strategy = new StrategyPattern.Ellipse();
             NoneBtn.IsEnabled = true;
             RectangleBtn.IsEnabled = true;
             EllipseBtn.IsEnabled = false;
@@ -122,49 +116,10 @@ namespace PaintPatterns
                     if (drawing == false)
                     {
                         drawing = true;
-                        if (shape == "ellipse")
-                        {
-                            Ellipse ellipse = new Ellipse()
-                            {
-                                Width = 20,
-                                Height = 20,
-                                Stroke = Brushes.Black,
-                                StrokeThickness = 2,
-                                Fill = (Brush)typeof(Brushes).GetProperties()[new Random().Next(typeof(Brushes).GetProperties().Length)].GetValue(null, null)
-                            };
 
-                            ellipse.Uid = Guid.NewGuid().ToString("N");
-
-                            Canvas.Children.Add(ellipse);
-                            ellipse.SetValue(Canvas.LeftProperty, InitialPosition.X);
-                            ellipse.SetValue(Canvas.TopProperty, InitialPosition.Y);
-
-                            shapeDrawing = ellipse;
-                        }
-                        else if (shape == "rectangle")
-                        {
-                            Rectangle rectangle = new Rectangle()
-                            {
-                                Width = 20,
-                                Height = 20,
-                                Stroke = Brushes.Black,
-                                StrokeThickness = 2,
-                                Fill = (Brush)typeof(Brushes).GetProperties()[new Random().Next(typeof(Brushes).GetProperties().Length)].GetValue(null, null)
-                            };
-
-
-                            rectangle.Uid = Guid.NewGuid().ToString("N");
-
-                            Canvas.Children.Add(rectangle);
-                            rectangle.SetValue(Canvas.LeftProperty, InitialPosition.X);
-                            rectangle.SetValue(Canvas.TopProperty, InitialPosition.Y);
-
-                            rectangle.SetCurrentValue(Canvas.LeftProperty, InitialPosition.X);
-                            rectangle.SetCurrentValue(Canvas.TopProperty, InitialPosition.Y);
-
-                            shapeDrawing = rectangle;
-                        }
-                        //composite.Add(shapeDrawing);
+                        if (shape != "ellipse" && shape != "rectangle") return;
+                        strategy.Execute();
+                        composite.Add(shapeDrawing);
                     }
                 }
             }
@@ -172,6 +127,7 @@ namespace PaintPatterns
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
+            MousePos = e.GetPosition(Canvas);
 //            if (Mouse.LeftButton == MouseButtonState.Pressed)
 //            {
 //                if (drawing)
@@ -210,7 +166,7 @@ namespace PaintPatterns
             {
                 if (drawing)
                 {
-                    invoker.Draw(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, true, composite);
+                    invoker.Draw(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas, shapeDrawing, null);
                 }
                 if (mouseButtonHeld && selectedElement != null && moving)
                 {
