@@ -54,7 +54,7 @@ namespace PaintPatterns
             if (ActionsUndo.Count != 0)
             {
                 ICommand command = ActionsUndo.Pop();
-                command.Undo(selectedElement, getPosition, RelativePoint, initialPosition, canvas, shapeDrawing);
+                command.Undo();
                 ActionsRedo.Push(command);
             }
         }
@@ -64,7 +64,7 @@ namespace PaintPatterns
             if (ActionsRedo.Count != 0)
             {
                 ICommand command = ActionsRedo.Pop();
-                command.Redo(selectedElement, getPosition, RelativePoint, initialPosition, canvas, shapeDrawing);
+                command.Redo();
                 ActionsUndo.Push(command);
             }
         }

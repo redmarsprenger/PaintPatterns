@@ -11,19 +11,5 @@ namespace PaintPatterns.Command
 {
     class Unselect
     {
-        public void Execute(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, bool done)
-        {
-
-        }
-
-        public void Redo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing)
-        {
-
-        }
-
-        public void Undo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing)
-        {
-
-        }
     }
 }

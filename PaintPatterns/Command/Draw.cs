@@ -12,14 +12,6 @@ namespace PaintPatterns.Command
     class Draw : ICommand
     {
         private Point oldPos;
-        private bool firstShape;
-        private UIElement _this;
-        private UIElement _selectedElement;
-        private Point _getPosition;
-        private Point _RelativePoint; 
-        private Point _initialPosition;
-        private Canvas _canvas;
-        private Shape _shapeDrawing;
         private Shape shape;
         private UIElement selectedElement;
         private Point getPosition;
@@ -70,12 +62,12 @@ namespace PaintPatterns.Command
             }
         }
 
-        public void Redo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing)
+        public void Redo()
         {
             canvas.Children.Add(shape);
         }
 
-        public void Undo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing)
+        public void Undo()
         {
             canvas.Children.Remove(shape);
         }
