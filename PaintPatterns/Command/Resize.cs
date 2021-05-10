@@ -11,7 +11,6 @@ namespace PaintPatterns.Command
 {
     class Resize : ICommand
     {
-        private Point oldPos;
         private UIElement selectedElement;
         private Point getPosition;
         private Point RelativePoint;
@@ -33,10 +32,6 @@ namespace PaintPatterns.Command
 
         public void Execute()
         {
-            if (selectedElement == null)
-            {
-                selectedElement = shapeDrawing;
-            }
             if (getPosition.X < RelativePoint.X && getPosition.Y > RelativePoint.Y)
             {
                 selectedElement.SetValue(Canvas.LeftProperty, (double)getPosition.X);
@@ -103,30 +98,30 @@ namespace PaintPatterns.Command
             {
                 selectedElement = shapeDrawing;
             }
-            if (getPosition.X < RelativePoint.X && getPosition.Y > RelativePoint.Y)
+            if (initialPosition.X < RelativePoint.X && initialPosition.Y > RelativePoint.Y)
             {
-                selectedElement.SetValue(Canvas.LeftProperty, (double)getPosition.X);
-                selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)RelativePoint.X - getPosition.X);
-                selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)getPosition.Y - (int)RelativePoint.Y);
+                selectedElement.SetValue(Canvas.LeftProperty, (double)initialPosition.X);
+                selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)RelativePoint.X - initialPosition.X);
+                selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)initialPosition.Y - (int)RelativePoint.Y);
             }
-            else if (getPosition.X > RelativePoint.X && getPosition.Y < RelativePoint.Y)
+            else if (initialPosition.X > RelativePoint.X && initialPosition.Y < RelativePoint.Y)
             {
-                selectedElement.SetValue(Canvas.TopProperty, (double)getPosition.Y);
-                selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)getPosition.X - (int)RelativePoint.X);
-                selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)RelativePoint.Y - (int)getPosition.Y);
+                selectedElement.SetValue(Canvas.TopProperty, (double)initialPosition.Y);
+                selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)initialPosition.X - (int)RelativePoint.X);
+                selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)RelativePoint.Y - (int)initialPosition.Y);
             }
-            else if (getPosition.X < RelativePoint.X && getPosition.Y < RelativePoint.Y)
+            else if (initialPosition.X < RelativePoint.X && initialPosition.Y < RelativePoint.Y)
             {
-                selectedElement.SetValue(Canvas.LeftProperty, (double)getPosition.X);
-                selectedElement.SetValue(Canvas.TopProperty, (double)getPosition.Y);
-                selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)RelativePoint.X - (int)getPosition.X);
-                selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)RelativePoint.Y - (int)getPosition.Y);
+                selectedElement.SetValue(Canvas.LeftProperty, (double)initialPosition.X);
+                selectedElement.SetValue(Canvas.TopProperty, (double)initialPosition.Y);
+                selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)RelativePoint.X - (int)initialPosition.X);
+                selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)RelativePoint.Y - (int)initialPosition.Y);
             }
             else
-            if (getPosition.X > RelativePoint.X && getPosition.Y > RelativePoint.Y)
+            if (initialPosition.X > RelativePoint.X && initialPosition.Y > RelativePoint.Y)
             {
-                selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)getPosition.X - (int)RelativePoint.X);
-                selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)getPosition.Y - (int)RelativePoint.Y);
+                selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)initialPosition.X - (int)RelativePoint.X);
+                selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)initialPosition.Y - (int)RelativePoint.Y);
             }
         }
     }

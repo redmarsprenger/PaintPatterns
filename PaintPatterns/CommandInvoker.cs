@@ -14,7 +14,6 @@ namespace PaintPatterns
         private readonly Stack<Command.ICommand> ActionsUndo = new Stack<Command.ICommand>();
         private readonly Stack<Command.ICommand> ActionsRedo = new Stack<Command.ICommand>();
         public MainWindow MainWindow;
-        private Point InitPos;
 
         public void Resize(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, bool done)
         {
@@ -27,9 +26,9 @@ namespace PaintPatterns
             }
         }
 
-        public void Move(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Point Diff, Canvas canvas, Shape shapeDrawing, bool first, bool done)
+        public void Move(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Point Diff, Canvas canvas, Shape shapeDrawing, bool done)
         {
-            var cmd = new Move(selectedElement, getPosition, RelativePoint, InitPos, Diff, canvas, shapeDrawing, done);
+            var cmd = new Move(selectedElement, getPosition, RelativePoint, initialPosition, Diff, canvas, shapeDrawing, done);
             cmd.Execute();
             if (done)
             {

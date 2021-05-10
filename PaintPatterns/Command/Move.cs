@@ -40,14 +40,6 @@ namespace PaintPatterns.Command
         }
         public void Execute()
         {
-            if (done)
-            {
-                oldPos.X = RelativePoint.X;
-                oldPos.Y = RelativePoint.Y;
-                this.shape = shapeDrawing;
-                this.element = selectedElement;
-            }
-
             selectedElement.SetValue(Canvas.LeftProperty, (double)getPosition.X - Diff.X);
             selectedElement.SetValue(Canvas.TopProperty, (double)getPosition.Y - Diff.Y);
         }
@@ -60,8 +52,8 @@ namespace PaintPatterns.Command
 
         public void Undo()
         {
-            selectedElement.SetValue(Canvas.LeftProperty, (double)oldPos.X);
-            selectedElement.SetValue(Canvas.TopProperty, (double)oldPos.Y);
+            selectedElement.SetValue(Canvas.LeftProperty, (double)RelativePoint.X);
+            selectedElement.SetValue(Canvas.TopProperty, (double)RelativePoint.Y);
         }
     }
 }

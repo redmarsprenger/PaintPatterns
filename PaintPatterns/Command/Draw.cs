@@ -12,7 +12,6 @@ namespace PaintPatterns.Command
     class Draw : ICommand
     {
         private Point oldPos;
-        private Shape shape;
         private UIElement selectedElement;
         private Point getPosition;
         private Point relativePoint;
@@ -34,7 +33,6 @@ namespace PaintPatterns.Command
 
         public void Execute()
         {
-            this.shape = shapeDrawing;
             if (getPosition.X < initialPosition.X && getPosition.Y > initialPosition.Y)
             {
                 shapeDrawing.SetValue(Canvas.LeftProperty, (double)getPosition.X);
@@ -64,12 +62,12 @@ namespace PaintPatterns.Command
 
         public void Redo()
         {
-            canvas.Children.Add(shape);
+            canvas.Children.Add(shapeDrawing);
         }
 
         public void Undo()
         {
-            canvas.Children.Remove(shape);
+            canvas.Children.Remove(shapeDrawing);
         }
     }
 }

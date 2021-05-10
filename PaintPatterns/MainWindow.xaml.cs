@@ -202,7 +202,7 @@ namespace PaintPatterns
                 }
                 if (mouseButtonHeld && selectedElement != null && moving)
                 {
-                    invoker.Move(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Diff, Canvas, shapeDrawing, false, true);
+                    invoker.Move(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Diff, Canvas, shapeDrawing, true);
                 }
             }
             if (e.ChangedButton == MouseButton.Right && drawing)
