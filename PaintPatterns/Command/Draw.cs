@@ -69,5 +69,15 @@ namespace PaintPatterns.Command
         {
             canvas.Children.Remove(shapeDrawing);
         }
+
+        public UIElement GetElement()
+        {
+            return selectedElement;
+        }
+
+        public Shape GetShape()
+        {
+            return shapeDrawing;
+        }
     }
 }

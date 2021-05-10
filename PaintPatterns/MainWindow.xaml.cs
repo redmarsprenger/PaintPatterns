@@ -52,11 +52,9 @@ namespace PaintPatterns
         {
             InitializeComponent();
             NoneBtn.IsEnabled = false;
-            // invoker = CommandInvoker.GetInstance();
-            invoker.MainWindow = this;
+            invoker = new CommandInvoker {MainWindow = this};
 
             composite = new CompositeShapes();
-            invoker = new CommandInvoker {MainWindow = this};
         }
          
         private void NoneBtn_Click(object sender, RoutedEventArgs e)
@@ -135,6 +133,8 @@ namespace PaintPatterns
                                 Fill = (Brush)typeof(Brushes).GetProperties()[new Random().Next(typeof(Brushes).GetProperties().Length)].GetValue(null, null)
                             };
 
+                            ellipse.Uid = Guid.NewGuid().ToString("N");
+
                             Canvas.Children.Add(ellipse);
                             ellipse.SetValue(Canvas.LeftProperty, InitialPosition.X);
                             ellipse.SetValue(Canvas.TopProperty, InitialPosition.Y);
@@ -152,6 +152,9 @@ namespace PaintPatterns
                                 Fill = (Brush)typeof(Brushes).GetProperties()[new Random().Next(typeof(Brushes).GetProperties().Length)].GetValue(null, null)
                             };
 
+
+                            rectangle.Uid = Guid.NewGuid().ToString("N");
+
                             Canvas.Children.Add(rectangle);
                             rectangle.SetValue(Canvas.LeftProperty, InitialPosition.X);
                             rectangle.SetValue(Canvas.TopProperty, InitialPosition.Y);
@@ -161,7 +164,7 @@ namespace PaintPatterns
 
                             shapeDrawing = rectangle;
                         }
-                        composite.Add(shapeDrawing);
+                        //composite.Add(shapeDrawing);
                     }
                 }
             }
@@ -206,18 +209,18 @@ namespace PaintPatterns
             {
                 if (drawing)
                 {
-                    invoker.Draw(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, true);
+                    invoker.Draw(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, true, composite);
                 }
                 if (mouseButtonHeld && selectedElement != null && moving)
                 {
-                    invoker.Move(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Diff, Canvas, shapeDrawing, true);
+                    invoker.Move(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Diff, Canvas, shapeDrawing, true, composite);
                 }
             }
             if (e.ChangedButton == MouseButton.Right && drawing)
             {
                 if (shape == "none")
                 {
-                    invoker.Resize(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, true);
+                    invoker.Resize(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, true, composite);
                 }
             }
 
@@ -233,14 +236,13 @@ namespace PaintPatterns
             {
                 if ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift && e.Key == Key.Z)
                 {
-                    invoker.Redo(selectedElement, firstPos, RelativePoint, InitialPosition, Canvas, shapeDrawing);
+                    invoker.Redo(selectedElement, firstPos, RelativePoint, InitialPosition, Canvas, shapeDrawing, composite);
                 }
                 else if (e.Key == Key.Z)
                 {
-                    invoker.Undo(selectedElement, firstPos, RelativePoint, InitialPosition, Canvas, shapeDrawing);
+                    invoker.Undo(selectedElement, firstPos, RelativePoint, InitialPosition, Canvas, shapeDrawing, composite);
                 }
             }
-            composite.Update(selectedElement);
         }
     }
 }

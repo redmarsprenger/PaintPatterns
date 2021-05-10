@@ -55,5 +55,15 @@ namespace PaintPatterns.Command
             selectedElement.SetValue(Canvas.LeftProperty, (double)RelativePoint.X);
             selectedElement.SetValue(Canvas.TopProperty, (double)RelativePoint.Y);
         }
+
+        public UIElement GetElement()
+        {
+            return selectedElement;
+        }
+
+        public Shape GetShape()
+        {
+            return shapeDrawing;
+        }
     }
 }

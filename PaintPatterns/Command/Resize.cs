@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PaintPatterns.Composite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,8 +19,9 @@ namespace PaintPatterns.Command
         private Canvas canvas;
         private Shape shapeDrawing;
         private bool done;
+        private CompositeShapes composite;
 
-        public Resize(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, bool done)
+        public Resize(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, bool done, CompositeShapes composite)
         {
             this.selectedElement = selectedElement;
             this.getPosition = getPosition;
@@ -28,6 +30,7 @@ namespace PaintPatterns.Command
             this.canvas = canvas;
             this.shapeDrawing = shapeDrawing;
             this.done = done;
+            this.composite = composite;
         }
 
         public void Execute()
@@ -57,6 +60,7 @@ namespace PaintPatterns.Command
                 selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)getPosition.X - (int)RelativePoint.X);
                 selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)getPosition.Y - (int)RelativePoint.Y);
             }
+            //composite.Update(selectedElement);
         }
 
         public void Redo()
@@ -90,6 +94,7 @@ namespace PaintPatterns.Command
                 selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)getPosition.X - (int)RelativePoint.X);
                 selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)getPosition.Y - (int)RelativePoint.Y);
             }
+            //composite.Update(shapeDrawing);
         }
 
         public void Undo()
@@ -123,6 +128,17 @@ namespace PaintPatterns.Command
                 selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)initialPosition.X - (int)RelativePoint.X);
                 selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)initialPosition.Y - (int)RelativePoint.Y);
             }
+            //composite.Update(shapeDrawing);
+        }
+
+        public UIElement GetElement()
+        {
+            return selectedElement;
+        }
+
+        public Shape GetShape()
+        {
+            return shapeDrawing;
         }
     }
 }

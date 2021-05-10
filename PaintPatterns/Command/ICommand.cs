@@ -9,6 +9,8 @@ namespace PaintPatterns.Command
         void Execute();
         void Undo();
         void Redo();
+        UIElement GetElement();
+        Shape GetShape();
     }
 }
 

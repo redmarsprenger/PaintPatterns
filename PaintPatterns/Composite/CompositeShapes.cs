@@ -31,6 +31,16 @@ namespace PaintPatterns.Composite
         {
             ChildElements.Update(element);
         }
+
+        public void Update(Shape shape)
+        {
+            ChildElements.Update(shape);
+        }
+
+        public void Remove(string uid)
+        {
+            ChildElements.Remove(uid);
+        }
     }
 
     public class Group
@@ -56,6 +66,7 @@ namespace PaintPatterns.Composite
             {
                 if (item.Shape.Uid == element.Uid)
                 {
+                    //item.Shape = (Shape)element;
                     item.Shape.SetValue(Canvas.LeftProperty, element.GetValue(Canvas.LeftProperty));
                     item.Shape.SetValue(Canvas.TopProperty, element.GetValue(Canvas.TopProperty));
                     item.Shape.GetType().GetProperty("Width").SetValue(element, element.GetType().GetProperty("Width").GetValue(element));
@@ -64,6 +75,36 @@ namespace PaintPatterns.Composite
                 else if (item.Shape == null)
                 {
                     Update(element);
+                }
+            }
+        }
+
+        public void Update(Shape shape)
+        {
+            foreach (Part item in Parts)
+            {
+                if (item.Shape.Uid == shape.Uid)
+                {
+                    item.Shape = shape;
+                }
+                else if (item.Shape == null)
+                {
+                    Update(shape);
+                }
+            }
+        }
+
+        public void Remove(string uid)
+        {
+            foreach (Part item in Parts)
+            {
+                if (item.Shape.Uid == uid)
+                {
+                    Parts.Remove(item);
+                }
+                else if (item.Shape == null)
+                {
+                    Remove(uid);
                 }
             }
         }
