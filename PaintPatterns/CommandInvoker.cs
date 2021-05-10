@@ -1,6 +1,9 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Shapes;
 using PaintPatterns.Command;
 
 namespace PaintPatterns
@@ -8,47 +11,61 @@ namespace PaintPatterns
     class CommandInvoker
     {
         private static readonly CommandInvoker Instance = new CommandInvoker();
-        private readonly Stack<Command.Actions> ActionsUndo = new Stack<Command.Actions>();
-        private readonly Stack<Command.Actions> ActionsRedo = new Stack<Command.Actions>();
+        private readonly Stack<Command.ICommand> ActionsUndo = new Stack<Command.ICommand>();
+        private readonly Stack<Command.ICommand> ActionsRedo = new Stack<Command.ICommand>();
         public MainWindow MainWindow;
 
-        public void Resize()
+        public void Resize(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, bool done)
         {
-            //var cmd = new Resize();
-            //cmd.Execute();
-            //ActionsUndo.Push(cmd);
-        }
-
-        public void Move()
-        {
-            var cmd = new Move();
+            var cmd = new Resize(selectedElement, getPosition, RelativePoint, initialPosition, canvas, shapeDrawing, done);
             cmd.Execute();
-            ActionsUndo.Push(cmd);
+            if (done)
+            {
+                ActionsUndo.Push(cmd);
+                ActionsRedo.Clear();
+            }
         }
 
-        public void Draw()
+        public void Move(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Point Diff, Canvas canvas, Shape shapeDrawing, bool done)
         {
-            var cmd = new Draw();
+            var cmd = new Move(selectedElement, getPosition, RelativePoint, initialPosition, Diff, canvas, shapeDrawing, done);
             cmd.Execute();
-            ActionsUndo.Push(cmd);
+            if (done)
+            {
+                ActionsUndo.Push(cmd);
+                ActionsRedo.Clear();
+            }
         }
 
-        public void Undo()
+        public void Draw(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, bool done)
         {
-            var Action = ActionsRedo.Peek();
-            Action.Undo();
-            ActionsRedo.Push(Action);
+            var cmd = new Draw(selectedElement, getPosition, RelativePoint, initialPosition, canvas, shapeDrawing, done);
+            cmd.Execute();
+            if (done)
+            {
+                ActionsUndo.Push(cmd);
+                ActionsRedo.Clear();
+            }
         }
-
-        public void Redo()
+        
+        public void Undo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing)
         {
-            var Action = ActionsRedo.Peek();
-            Action.Redo();
-            ActionsUndo.Push(Action);
+            if (ActionsUndo.Count != 0)
+            {
+                ICommand command = ActionsUndo.Pop();
+                command.Undo();
+                ActionsRedo.Push(command);
+            }
         }
-        public static CommandInvoker GetInstance()
+        
+        public void Redo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing)
         {
-            return Instance;
+            if (ActionsRedo.Count != 0)
+            {
+                ICommand command = ActionsRedo.Pop();
+                command.Redo();
+                ActionsUndo.Push(command);
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PaintPatterns.Command;
 
 namespace PaintPatterns
 {
@@ -35,18 +36,27 @@ namespace PaintPatterns
 
         Point firstPos;
         bool drawing = false;
+        bool moving = false;
         Shape shapeDrawing;
 
         CompositeShapes composite;
 
+        List<String> UndoList;
+        List<String> RedoList;
+        
+        private static List<Shape> Shapes = new List<Shape>();
+        private static Point Diff;
+        private static Point RelativePoint;
+        
         public MainWindow()
         {
             InitializeComponent();
             NoneBtn.IsEnabled = false;
-            invoker = CommandInvoker.GetInstance();
+            // invoker = CommandInvoker.GetInstance();
             invoker.MainWindow = this;
 
             composite = new CompositeShapes();
+            invoker = new CommandInvoker {MainWindow = this};
         }
          
         private void NoneBtn_Click(object sender, RoutedEventArgs e)
@@ -75,275 +85,160 @@ namespace PaintPatterns
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
+
+            mouseButtonHeld = true;
+            InitialPosition = e.GetPosition(Canvas);
+            if (shape == "none")
             {
-                mouseButtonHeld = true;
-                InitialPosition = e.GetPosition(Canvas);
-                if (shape == "none")
+                selectedElement?.GetType().GetProperty("Stroke")?.SetValue(selectedElement, Brushes.Black);
+                if (e.Source != Canvas)
                 {
-                    if (selectedElement != null)
-                        draw.unselect(selectedElement);
-                    if (e.Source != Canvas)
+                    if (!moving)
                     {
-                        drawing = false;
+                        moving = true;
+                        if (Mouse.LeftButton == MouseButtonState.Pressed)
+                            drawing = false;
+                        if (Mouse.RightButton == MouseButtonState.Pressed)
+                            drawing = true;
                         selectedShape = e.Source as Shape;
                         selectedElement = e.Source as UIElement;
-                        draw.select(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas);
+
+                        Point relativePoint = selectedElement.TransformToAncestor(Canvas).Transform(new Point(0, 0));
+                        Diff.X = InitialPosition.X - relativePoint.X;
+                        Diff.Y = InitialPosition.Y - relativePoint.Y;
+
+                        selectedElement.GetType().GetProperty("Stroke")?.SetValue(selectedElement, Brushes.Blue);
+                        RelativePoint = selectedElement.TransformToAncestor(Canvas).Transform(new Point(0, 0));
                     }
                 }
-                else
+            }
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                if (shape != "none")
                 {
-                    if (selectedElement != null)
-                        draw.unselect(selectedElement);
+                    selectedElement?.GetType().GetProperty("Stroke")?.SetValue(selectedElement, Brushes.Black);
 
                     selectedShape = null;
                     selectedElement = null;
 
                     if (drawing == false)
                     {
-                        firstPos = InitialPosition;
                         drawing = true;
                         if (shape == "ellipse")
                         {
-                            if (InitialPosition.X < firstPos.X && InitialPosition.Y > firstPos.Y)
+                            Ellipse ellipse = new Ellipse()
                             {
-                                shapeDrawing = draw.ellipse((int)InitialPosition.X, (int)firstPos.Y, (int)firstPos.X - (int)InitialPosition.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
-                            }
-                            else if (InitialPosition.X > firstPos.X && InitialPosition.Y < firstPos.Y)
-                            {
-                                shapeDrawing = draw.ellipse((int)firstPos.X, (int)InitialPosition.Y, (int)InitialPosition.X - (int)firstPos.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
-                            }
-                            else if (InitialPosition.X < firstPos.X && InitialPosition.Y < firstPos.Y)
-                            {
-                                shapeDrawing = draw.ellipse((int)InitialPosition.X, (int)InitialPosition.Y, (int)firstPos.X - (int)InitialPosition.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
-                            }
-                            else
-                            {
-                                shapeDrawing = draw.ellipse((int)firstPos.X, (int)firstPos.Y, (int)InitialPosition.X - (int)firstPos.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
-                            }
+                                Width = 20,
+                                Height = 20,
+                                Stroke = Brushes.Black,
+                                StrokeThickness = 2,
+                                Fill = (Brush)typeof(Brushes).GetProperties()[new Random().Next(typeof(Brushes).GetProperties().Length)].GetValue(null, null)
+                            };
+
+                            Canvas.Children.Add(ellipse);
+                            ellipse.SetValue(Canvas.LeftProperty, InitialPosition.X);
+                            ellipse.SetValue(Canvas.TopProperty, InitialPosition.Y);
+
+                            shapeDrawing = ellipse;
                         }
                         else if (shape == "rectangle")
                         {
-                            if (InitialPosition.X < firstPos.X && InitialPosition.Y > firstPos.Y)
+                            Rectangle rectangle = new Rectangle()
                             {
-                                shapeDrawing = draw.rectangle((int)InitialPosition.X, (int)firstPos.Y, (int)firstPos.X - (int)InitialPosition.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
-                            }
-                            else if (InitialPosition.X > firstPos.X && InitialPosition.Y < firstPos.Y)
-                            {
-                                shapeDrawing = draw.rectangle((int)firstPos.X, (int)InitialPosition.Y, (int)InitialPosition.X - (int)firstPos.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
-                            }
-                            else if (InitialPosition.X < firstPos.X && InitialPosition.Y < firstPos.Y)
-                            {
-                                shapeDrawing = draw.rectangle((int)InitialPosition.X, (int)InitialPosition.Y, (int)firstPos.X - (int)InitialPosition.X, (int)firstPos.Y - (int)InitialPosition.Y, Canvas);
-                            }
-                            else
-                            {
-                                shapeDrawing = draw.rectangle((int)firstPos.X, (int)firstPos.Y, (int)InitialPosition.X - (int)firstPos.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
-                            }
+                                Width = 20,
+                                Height = 20,
+                                Stroke = Brushes.Black,
+                                StrokeThickness = 2,
+                                Fill = (Brush)typeof(Brushes).GetProperties()[new Random().Next(typeof(Brushes).GetProperties().Length)].GetValue(null, null)
+                            };
+
+                            Canvas.Children.Add(rectangle);
+                            rectangle.SetValue(Canvas.LeftProperty, InitialPosition.X);
+                            rectangle.SetValue(Canvas.TopProperty, InitialPosition.Y);
+
+                            rectangle.SetCurrentValue(Canvas.LeftProperty, InitialPosition.X);
+                            rectangle.SetCurrentValue(Canvas.TopProperty, InitialPosition.Y);
+
+                            shapeDrawing = rectangle;
                         }
                         composite.Add(shapeDrawing);
                     }
                 }
             }
-            else if (Mouse.RightButton == MouseButtonState.Pressed)
-            {
-                mouseButtonHeld = true;
-                InitialPosition = e.GetPosition(Canvas);
-                if (shape == "none")
-                {
-                    if (selectedElement != null)
-                        draw.unselect(selectedElement);
-                    if (e.Source != Canvas)
-                    {
-                        drawing = true;
-                        selectedShape = e.Source as Shape;
-                        selectedElement = e.Source as UIElement;
-                        draw.select(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas);
-                    }
-                }
-            }
-        }
-
-        private void Window_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            mouseButtonHeld = false;
-            firstPos = new Point();
-            drawing = false;
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
-            {
-                if (drawing)
-                {
-                    if (e.GetPosition(Canvas).X < firstPos.X && e.GetPosition(Canvas).Y > firstPos.Y)
-                    {
-                        shapeDrawing.SetValue(Canvas.LeftProperty, (double)e.GetPosition(Canvas).X);
-                        shapeDrawing.Width = (int)firstPos.X - (int)e.GetPosition(Canvas).X;
-                        shapeDrawing.Height = (int)e.GetPosition(Canvas).Y - (int)firstPos.Y;
-                    }
-                    else if (e.GetPosition(Canvas).X > firstPos.X && e.GetPosition(Canvas).Y < firstPos.Y)
-                    {
-                        shapeDrawing.SetValue(Canvas.TopProperty, (double)e.GetPosition(Canvas).Y);
-                        shapeDrawing.Width = (int)e.GetPosition(Canvas).X - (int)firstPos.X;
-                        shapeDrawing.Height = (int)firstPos.Y - (int)e.GetPosition(Canvas).Y;
-                    }
-                    else if (e.GetPosition(Canvas).X < firstPos.X && e.GetPosition(Canvas).Y < firstPos.Y)
-                    {
-                        shapeDrawing.SetValue(Canvas.LeftProperty, (double)e.GetPosition(Canvas).X);
-                        shapeDrawing.SetValue(Canvas.TopProperty, (double)e.GetPosition(Canvas).Y);
-                        shapeDrawing.Width = (int)firstPos.X - (int)e.GetPosition(Canvas).X;
-                        shapeDrawing.Height = (int)firstPos.Y - (int)e.GetPosition(Canvas).Y;
-                    }
-                    else if (e.GetPosition(Canvas).X > firstPos.X && e.GetPosition(Canvas).Y > firstPos.Y)
-                    {
-                        shapeDrawing.Width = (int)e.GetPosition(Canvas).X - (int)firstPos.X;
-                        shapeDrawing.Height = (int)e.GetPosition(Canvas).Y - (int)firstPos.Y;
-                    }
-                }
-                else if (mouseButtonHeld && selectedElement != null)
-                {
-                    if (e.Source != Canvas)
-                    {
-                        Point position = Mouse.GetPosition(Canvas);
-                        draw.move(selectedElement, e.GetPosition(Canvas), composite);
-                    }
-                }
-            }
-            else if (Mouse.RightButton == MouseButtonState.Pressed && drawing)
-            {
-                if (shape == "none")
-                {
-                    draw.resize(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas, composite);
-                }
-            }
+//            if (Mouse.LeftButton == MouseButtonState.Pressed)
+//            {
+//                if (drawing)
+//                {
+//                    invoker.Draw(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, false);
+//                }
+//                else if (mouseButtonHeld && selectedElement != null)
+//                {
+//                    if (e.Source != Canvas)
+//                    {
+//                        invoker.Move(selectedElement, e.GetPosition(Canvas), Diff, InitialPosition, Canvas, shapeDrawing, false, false);
+//                    }
+//                }
+//            }
+//            else if (Mouse.RightButton == MouseButtonState.Pressed && drawing)
+//            {
+//                if (shape == "none")
+//                {
+//                    invoker.Resize(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, false);
+//                }
+//            }
         }
 
         private void ChangeColor_Click(object sender, RoutedEventArgs e)
         {
-            if (shape == "none" && selectedShape != null)
+//            if (shape == "none" && selectedShape != null)
+//            {
+//                selectedShape = new RedDecorator(selectedShape).ReturnShape();
+//            }
+        }
+
+        private void Window_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
             {
-                selectedShape = new RedDecorator(selectedShape).ReturnShape();
+                if (drawing)
+                {
+                    invoker.Draw(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, true);
+                }
+                if (mouseButtonHeld && selectedElement != null && moving)
+                {
+                    invoker.Move(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Diff, Canvas, shapeDrawing, true);
+                }
             }
-        }
-    }
-
-    public class draw
-    {
-        private static List<Shape> Shapes = new List<Shape>();
-        private static Point Diff;
-        private static Point RelativePoint;
-
-        public static Ellipse ellipse(int x, int y, int width, int height, Canvas cv)
-        {
-            Ellipse ellipse = new Ellipse()
+            if (e.ChangedButton == MouseButton.Right && drawing)
             {
-                Width = width,
-                Height = height,
-                Stroke = Brushes.Black,
-                StrokeThickness = 2,
-                Fill = randColor()
-            };            
-
-            cv.Children.Add(ellipse);
-            ellipse.SetValue(Canvas.LeftProperty, (double)x);
-            ellipse.SetValue(Canvas.TopProperty, (double)y);
-
-            //add identifier so it can be found later
-            ellipse.Uid = Guid.NewGuid().ToString("N");
-
-            Shapes.Add(ellipse);
-            return ellipse;
-        }
-
-        public static Rectangle rectangle(int x, int y, int width, int height, Canvas cv)
-        {
-            Rectangle rectangle = new Rectangle()
-            {
-                Width = width,
-                Height = height,
-                Stroke = Brushes.Black,
-                StrokeThickness = 2,
-                Fill = randColor()
-            };
-
-            cv.Children.Add(rectangle);
-            rectangle.SetValue(Canvas.LeftProperty, (double)x);
-            rectangle.SetValue(Canvas.TopProperty, (double)y);
-
-            //add identifier so it can be found later
-            rectangle.Uid = Guid.NewGuid().ToString("N");
-
-            Shapes.Add(rectangle);
-            return rectangle;
-        }
-
-        public static void move(UIElement selectedElement, Point getPosition, CompositeShapes composite)
-        {
-            selectedElement.SetValue(Canvas.LeftProperty, (double)getPosition.X - Diff.X);
-            selectedElement.SetValue(Canvas.TopProperty, (double)getPosition.Y - Diff.Y);
-
-            composite.Update(selectedElement);
-        }
-
-        public static void select(UIElement selectedElement, Point getPosition, Point InitialPosition, Canvas canvas)
-        {
-            Point relativePoint = selectedElement.TransformToAncestor(canvas).Transform(new Point(0, 0));
-            Diff.X = InitialPosition.X - relativePoint.X;
-            Diff.Y = InitialPosition.Y - relativePoint.Y;
-
-            selectedElement.GetType().GetProperty("Stroke").SetValue(selectedElement, Brushes.Blue);
-            RelativePoint = selectedElement.TransformToAncestor(canvas).Transform(new Point(0, 0));
-        }
-
-        public static void unselect(UIElement selectedElement)
-        {
-            selectedElement.GetType().GetProperty("Stroke").SetValue(selectedElement, Brushes.Black);
-        }
-
-        public static Brush randColor()
-        {
-            Brush result = Brushes.Transparent;
-
-            Random rnd = new Random();
-
-            Type brushesType = typeof(Brushes);
-
-            PropertyInfo[] properties = brushesType.GetProperties();
-
-            int random = rnd.Next(properties.Length);
-            result = (Brush)properties[random].GetValue(null, null);
-
-            return result;
-        }
-
-        public static void resize(UIElement selectedElement, Point getPosition, Point initialPosition, Canvas canvas, CompositeShapes composite)
-        {
-            if (getPosition.X < RelativePoint.X && getPosition.Y > RelativePoint.Y)
-            {
-                selectedElement.SetValue(Canvas.LeftProperty, (double)getPosition.X);
-                selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)RelativePoint.X - getPosition.X);
-                selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)getPosition.Y - (int)RelativePoint.Y);
+                if (shape == "none")
+                {
+                    invoker.Resize(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, true);
+                }
             }
-            else if (getPosition.X > RelativePoint.X && getPosition.Y < RelativePoint.Y)
+
+            mouseButtonHeld = false;
+            firstPos = new Point();
+            drawing = false;
+            moving = false;
+        }
+
+        private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                selectedElement.SetValue(Canvas.TopProperty, (double)getPosition.Y);
-                selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)getPosition.X - (int)RelativePoint.X);
-                selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)RelativePoint.Y - (int)getPosition.Y);
-            }
-            else if (getPosition.X < RelativePoint.X && getPosition.Y < RelativePoint.Y)
-            {
-                selectedElement.SetValue(Canvas.LeftProperty, (double)getPosition.X);
-                selectedElement.SetValue(Canvas.TopProperty, (double)getPosition.Y);
-                selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)RelativePoint.X - (int)getPosition.X);
-                selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)RelativePoint.Y - (int)getPosition.Y);
-            }
-            else 
-            if (getPosition.X > RelativePoint.X && getPosition.Y > RelativePoint.Y)
-            {
-                selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)getPosition.X - (int)RelativePoint.X);
-                selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)getPosition.Y - (int)RelativePoint.Y);
+                if ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift && e.Key == Key.Z)
+                {
+                    invoker.Redo(selectedElement, firstPos, RelativePoint, InitialPosition, Canvas, shapeDrawing);
+                }
+                else if (e.Key == Key.Z)
+                {
+                    invoker.Undo(selectedElement, firstPos, RelativePoint, InitialPosition, Canvas, shapeDrawing);
+                }
             }
             composite.Update(selectedElement);
         }
