@@ -141,7 +141,6 @@ namespace PaintPatterns
                                 shapeDrawing = draw.rectangle((int)firstPos.X, (int)firstPos.Y, (int)InitialPosition.X - (int)firstPos.X, (int)InitialPosition.Y - (int)firstPos.Y, Canvas);
                             }
                         }
-                        //after the shap is drawn add it to the composite
                         composite.Add(shapeDrawing);
                     }
                 }
@@ -208,7 +207,7 @@ namespace PaintPatterns
                     if (e.Source != Canvas)
                     {
                         Point position = Mouse.GetPosition(Canvas);
-                        draw.move(selectedElement, e.GetPosition(Canvas));
+                        draw.move(selectedElement, e.GetPosition(Canvas), composite);
                     }
                 }
             }
@@ -216,7 +215,7 @@ namespace PaintPatterns
             {
                 if (shape == "none")
                 {
-                    draw.resize(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas);
+                    draw.resize(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas, composite);
                 }
             }
         }
@@ -251,6 +250,9 @@ namespace PaintPatterns
             ellipse.SetValue(Canvas.LeftProperty, (double)x);
             ellipse.SetValue(Canvas.TopProperty, (double)y);
 
+            //add identifier so it can be found later
+            ellipse.Uid = Guid.NewGuid().ToString("N");
+
             Shapes.Add(ellipse);
             return ellipse;
         }
@@ -270,14 +272,19 @@ namespace PaintPatterns
             rectangle.SetValue(Canvas.LeftProperty, (double)x);
             rectangle.SetValue(Canvas.TopProperty, (double)y);
 
+            //add identifier so it can be found later
+            rectangle.Uid = Guid.NewGuid().ToString("N");
+
             Shapes.Add(rectangle);
             return rectangle;
         }
 
-        public static void move(UIElement selectedElement, Point getPosition)
+        public static void move(UIElement selectedElement, Point getPosition, CompositeShapes composite)
         {
             selectedElement.SetValue(Canvas.LeftProperty, (double)getPosition.X - Diff.X);
             selectedElement.SetValue(Canvas.TopProperty, (double)getPosition.Y - Diff.Y);
+
+            composite.Update(selectedElement);
         }
 
         public static void select(UIElement selectedElement, Point getPosition, Point InitialPosition, Canvas canvas)
@@ -311,7 +318,7 @@ namespace PaintPatterns
             return result;
         }
 
-        public static void resize(UIElement selectedElement, Point getPosition, Point initialPosition, Canvas canvas)
+        public static void resize(UIElement selectedElement, Point getPosition, Point initialPosition, Canvas canvas, CompositeShapes composite)
         {
             if (getPosition.X < RelativePoint.X && getPosition.Y > RelativePoint.Y)
             {
@@ -338,6 +345,7 @@ namespace PaintPatterns
                 selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)getPosition.X - (int)RelativePoint.X);
                 selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)getPosition.Y - (int)RelativePoint.Y);
             }
+            composite.Update(selectedElement);
         }
     }
 }
