@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,20 @@ namespace PaintPatterns.Composite
         {
             ChildElements.Remove(uid);
         }
+
+        public void Write()
+        {
+            string path = System.IO.Directory.GetCurrentDirectory() + "help.txt";
+
+            //if (!File.Exists(path))
+            //{
+                using (StreamWriter sw = File.CreateText(path))
+                {
+                    int tabs = 0;
+                    ChildElements.Write(sw, tabs);
+                }
+            //}
+        }
     }
 
     public class Group
@@ -67,10 +82,10 @@ namespace PaintPatterns.Composite
                 if (item.Shape.Uid == element.Uid)
                 {
                     //item.Shape = (Shape)element;
-                    item.Shape.SetValue(Canvas.LeftProperty, element.GetValue(Canvas.LeftProperty));
-                    item.Shape.SetValue(Canvas.TopProperty, element.GetValue(Canvas.TopProperty));
-                    item.Shape.GetType().GetProperty("Width").SetValue(element, element.GetType().GetProperty("Width").GetValue(element));
-                    item.Shape.GetType().GetProperty("Height").SetValue(element, element.GetType().GetProperty("Height").GetValue(element));
+                    //item.Shape.SetValue(Canvas.LeftProperty, element.GetValue(Canvas.LeftProperty));
+                    //item.Shape.SetValue(Canvas.TopProperty, element.GetValue(Canvas.TopProperty));
+                    //item.Shape.GetType().GetProperty("Width").SetValue(element, element.GetType().GetProperty("Width").GetValue(element));
+                    //item.Shape.GetType().GetProperty("Height").SetValue(element, element.GetType().GetProperty("Height").GetValue(element));
                 }
                 else if (item.Shape == null)
                 {
@@ -109,12 +124,31 @@ namespace PaintPatterns.Composite
             }
         }
 
+        public void Write(StreamWriter sw, int tabs)
+        {
+            //write group stuff
+            sw.WriteLine("group " + Parts.Count.ToString());
+
+            tabs++; // increment tabs for the rest of shapes and a possible group
+            foreach (Part item in Parts)
+            {
+                if (item.Group != null)
+                {
+                    item.Group.Write(sw, tabs);
+                }
+                else
+                {
+                    item.Write(sw, tabs);
+                }
+            }
+        }
+
     }
 
     public class Part
     {
         public Shape Shape = null;
-        private Group Group = null;
+        public Group Group = null;
 
         public Part(Shape shape)
         {
@@ -124,6 +158,22 @@ namespace PaintPatterns.Composite
         public Part(Group group)
         {
             Group = group;
+        }
+
+        public void Write(StreamWriter sw, int tabs)
+        {
+            for (int i = 0; i < tabs; i++)
+            {
+                sw.Write("    ");
+            }
+            if (typeof(Rectangle).Equals(Shape.GetType()))
+            {
+                sw.WriteLine("rectangle " + Shape.GetValue(Canvas.LeftProperty) + " " + Shape.GetValue(Canvas.TopProperty) + " " + Shape.Width + " " + Shape.Height);
+            }
+            else
+            {
+                sw.WriteLine("ellipse " + Shape.GetValue(Canvas.LeftProperty) + " " + Shape.GetValue(Canvas.TopProperty) + " " + Shape.Width + " " + Shape.Height);
+            }
         }
     }
 }

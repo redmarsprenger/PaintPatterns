@@ -197,10 +197,11 @@ namespace PaintPatterns
 
         private void ChangeColor_Click(object sender, RoutedEventArgs e)
         {
-//            if (shape == "none" && selectedShape != null)
-//            {
-//                selectedShape = new RedDecorator(selectedShape).ReturnShape();
-//            }
+            //            if (shape == "none" && selectedShape != null)
+            //            {
+            //                selectedShape = new RedDecorator(selectedShape).ReturnShape();
+            //            }
+            composite.Write();
         }
 
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
