@@ -11,8 +11,38 @@ namespace PaintPatterns.Command
 {
     class Draw : ICommand
     {
-        public void Execute(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing)
+        private Point oldPos;
+        private bool firstShape;
+        private UIElement _this;
+        private UIElement _selectedElement;
+        private Point _getPosition;
+        private Point _RelativePoint; 
+        private Point _initialPosition;
+        private Canvas _canvas;
+        private Shape _shapeDrawing;
+        private Shape shape;
+        private UIElement selectedElement;
+        private Point getPosition;
+        private Point relativePoint;
+        private Point initialPosition;
+        private Canvas canvas;
+        private Shape shapeDrawing;
+        private bool done;
+
+        public Draw(UIElement selectedElement, Point getPosition, Point relativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, bool done)
         {
+            this.selectedElement = selectedElement;
+            this.getPosition = getPosition;
+            this.relativePoint = relativePoint;
+            this.initialPosition = initialPosition;
+            this.canvas = canvas;
+            this.shapeDrawing = shapeDrawing;
+            this.done = done;
+        }
+
+        public void Execute()
+        {
+            this.shape = shapeDrawing;
             if (getPosition.X < initialPosition.X && getPosition.Y > initialPosition.Y)
             {
                 shapeDrawing.SetValue(Canvas.LeftProperty, (double)getPosition.X);
@@ -40,14 +70,14 @@ namespace PaintPatterns.Command
             }
         }
 
-        public void Redo()
+        public void Redo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing)
         {
-
+            canvas.Children.Add(shape);
         }
 
-        public void Undo()
+        public void Undo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing)
         {
-
+            canvas.Children.Remove(shape);
         }
     }
 }
