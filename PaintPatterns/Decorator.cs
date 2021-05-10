@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
@@ -20,7 +21,23 @@ namespace PaintPatterns
         public RedDecorator(Shape selectedShape)
         {
             SelectedShape = selectedShape;
-            SelectedShape.Fill = draw.randColor();
+            SelectedShape.Fill = randColor();
+        }
+
+        public Brush randColor()
+        {
+            Brush result = Brushes.Transparent;
+
+            Random rnd = new Random();
+
+            Type brushesType = typeof(Brushes);
+
+            PropertyInfo[] properties = brushesType.GetProperties();
+
+            int random = rnd.Next(properties.Length);
+            result = (Brush)properties[random].GetValue(null, null);
+
+            return result;
         }
 
         public override Shape ReturnShape()

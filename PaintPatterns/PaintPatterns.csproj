@@ -65,10 +65,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CommandInvoker.cs" />
-    <Compile Include="Command\Actions.cs" />
+    <Compile Include="Command\IActions.cs" />
+    <Compile Include="Command\Commands\DrawCommand.cs" />
+    <Compile Include="Command\Commands\MoveCommand.cs" />
+    <Compile Include="Command\Commands\RedoCommand.cs" />
+    <Compile Include="Command\Commands\ResizeCommand.cs" />
+    <Compile Include="Command\Commands\UndoCommand.cs" />
     <Compile Include="Command\Draw.cs" />
+    <Compile Include="Command\ICommand.cs" />
     <Compile Include="Command\Move.cs" />
     <Compile Include="Command\Resize.cs" />
+    <Compile Include="Command\Select.cs" />
+    <Compile Include="Command\Unselect.cs" />
     <Compile Include="Decorator.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
