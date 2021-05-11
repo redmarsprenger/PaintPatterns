@@ -10,6 +10,9 @@ using System.Windows.Shapes;
 
 namespace PaintPatterns.Command
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class Draw : ICommand
     {
         private UIElement selectedElement;
@@ -19,6 +22,15 @@ namespace PaintPatterns.Command
         private Shape shapeDrawing;
         private Shape newShape;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="selectedElement"></param>
+        /// <param name="getPosition"></param>
+        /// <param name="initialPosition"></param>
+        /// <param name="canvas"></param>
+        /// <param name="shapeDrawing"></param>
+        /// <param name="shape"></param>
         public Draw(UIElement selectedElement, Point getPosition, Point initialPosition, Canvas canvas, Shape shapeDrawing, Shape shape)
         {
             this.selectedElement = selectedElement;
@@ -29,14 +41,19 @@ namespace PaintPatterns.Command
             this.newShape = shape;
         }
 
+        /// <summary>
+        /// Create new shape and set proper fields
+        /// </summary>
         public void Execute()
         {
+            // if newShape != null set the base values for a new shape
             if (newShape != null)
             {
                 newShape.Width = 20;
                 newShape.Height = 20;
                 newShape.Stroke = Brushes.Black;
                 newShape.StrokeThickness = 2;
+                //Random color
                 newShape.Fill = (Brush)typeof(Brushes).GetProperties()[new Random().Next(typeof(Brushes).GetProperties().Length)].GetValue(null, null);
 
                 canvas.Children.Add(newShape);
@@ -46,6 +63,7 @@ namespace PaintPatterns.Command
                 shapeDrawing = newShape;
             }
 
+            //Can't have '-' height or Width so change position if wanting to draw to minus axes.
             if (getPosition.X < initialPosition.X && getPosition.Y > initialPosition.Y)
             {
                 shapeDrawing.SetValue(Canvas.LeftProperty, (double)getPosition.X);
@@ -73,21 +91,35 @@ namespace PaintPatterns.Command
             }
         }
 
+        /// <summary>
+        /// Add shapeDrawing back into canvas
+        /// </summary>
         public void Redo()
         {
             canvas.Children.Add(shapeDrawing);
         }
 
+        /// <summary>
+        /// Remove shapeDrawing from canvas
+        /// </summary>
         public void Undo()
         {
             canvas.Children.Remove(shapeDrawing);
         }
 
+        /// <summary>
+        /// return selectedElement
+        /// </summary>
+        /// <returns></returns>
         public UIElement GetElement()
         {
             return selectedElement;
         }
 
+        /// <summary>
+        /// return shapeDrawing
+        /// </summary>
+        /// <returns></returns>
         public Shape GetShape()
         {
             return shapeDrawing;

@@ -38,7 +38,10 @@ namespace PaintPatterns
         private static List<Shape> Shapes = new List<Shape>();
         private static Point Diff;
         private static Point RelativePoint;
-        
+
+        /// <summary>
+        /// 
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -48,7 +51,12 @@ namespace PaintPatterns
             invoker = CommandInvoker.GetInstance();
             invoker.MainWindow = this;
         }
-         
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NoneBtn_Click(object sender, RoutedEventArgs e)
         {
             shape = "none";
@@ -57,6 +65,11 @@ namespace PaintPatterns
             EllipseBtn.IsEnabled = true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RectangleBtn_Click(object sender, RoutedEventArgs e)
         {
             shape = "rectangle";
@@ -66,6 +79,11 @@ namespace PaintPatterns
             EllipseBtn.IsEnabled = true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EllipseBtn_Click(object sender, RoutedEventArgs e)
         {
             shape = "ellipse";
@@ -75,6 +93,11 @@ namespace PaintPatterns
             EllipseBtn.IsEnabled = false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
@@ -125,41 +148,54 @@ namespace PaintPatterns
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
             MousePos = e.GetPosition(Canvas);
-//            if (Mouse.LeftButton == MouseButtonState.Pressed)
-//            {
-//                if (drawing)
-//                {
-//                    invoker.Draw(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, false);
-//                }
-//                else if (mouseButtonHeld && selectedElement != null)
-//                {
-//                    if (e.Source != Canvas)
-//                    {
-//                        invoker.Move(selectedElement, e.GetPosition(Canvas), Diff, InitialPosition, Canvas, shapeDrawing, false, false);
-//                    }
-//                }
-//            }
-//            else if (Mouse.RightButton == MouseButtonState.Pressed && drawing)
-//            {
-//                if (shape == "none")
-//                {
-//                    invoker.Resize(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, false);
-//                }
-//            }
+
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                if (drawing)
+                {
+                    invoker.Draw(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas, shapeDrawing, null, false);
+                }
+                if (mouseButtonHeld && selectedElement != null && moving)
+                {
+                    invoker.Move(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Diff, Canvas, shapeDrawing, false, composite);
+                }
+            }
+            else if (Mouse.RightButton == MouseButtonState.Pressed && drawing)
+            {
+                if (shape == "none")
+                {
+                    invoker.Resize(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, false, composite);
+                }
+            }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ChangeColor_Click(object sender, RoutedEventArgs e)
         {
-            //            if (shape == "none" && selectedShape != null)
-            //            {
-            //                selectedShape = new RedDecorator(selectedShape).ReturnShape();
-            //            }
+        //            if (shape == "none" && selectedShape != null)
+        //            {
+        //                selectedShape = new RedDecorator(selectedShape).ReturnShape();
+        //            }
             composite.Write();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -187,6 +223,11 @@ namespace PaintPatterns
             moving = false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
         {
             if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)

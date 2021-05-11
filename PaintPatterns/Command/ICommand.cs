@@ -4,6 +4,9 @@ using System.Windows.Shapes;
 
 namespace PaintPatterns.Command
 {
+    /// <summary>
+    /// ICommand interface
+    /// </summary>
     public interface ICommand
     {
         void Execute();

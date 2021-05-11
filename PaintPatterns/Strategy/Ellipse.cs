@@ -1,7 +1,13 @@
-﻿namespace PaintPatterns.StrategyPattern
+﻿namespace PaintPatterns.Strategy
 {
+    /// <summary>
+    /// Ellipse Strategy
+    /// </summary>
     class Ellipse : IStrategy
     {
+        /// <summary>
+        /// Execute Ellipse, Create new ellipse, set it as shapeDrawing and call CommandInvoker Draw
+        /// </summary>
         public void Execute()
         {
             System.Windows.Shapes.Ellipse ellipse = new System.Windows.Shapes.Ellipse();

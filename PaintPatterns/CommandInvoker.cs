@@ -9,6 +9,9 @@ using PaintPatterns.Composite;
 
 namespace PaintPatterns
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class CommandInvoker
     {
         private static readonly CommandInvoker Instance = new CommandInvoker();
@@ -16,6 +19,17 @@ namespace PaintPatterns
         private readonly Stack<Command.ICommand> ActionsRedo = new Stack<Command.ICommand>();
         public MainWindow MainWindow;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="selectedElement"></param>
+        /// <param name="getPosition"></param>
+        /// <param name="RelativePoint"></param>
+        /// <param name="initialPosition"></param>
+        /// <param name="canvas"></param>
+        /// <param name="shapeDrawing"></param>
+        /// <param name="done"></param>
+        /// <param name="composite"></param>
         public void Resize(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, bool done, CompositeShapes composite)
         {
             var cmd = new Resize(selectedElement, getPosition, RelativePoint, initialPosition, canvas, shapeDrawing, done, composite);
@@ -29,6 +43,18 @@ namespace PaintPatterns
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="selectedElement"></param>
+        /// <param name="getPosition"></param>
+        /// <param name="RelativePoint"></param>
+        /// <param name="initialPosition"></param>
+        /// <param name="Diff"></param>
+        /// <param name="canvas"></param>
+        /// <param name="shapeDrawing"></param>
+        /// <param name="done"></param>
+        /// <param name="composite"></param>
         public void Move(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Point Diff, Canvas canvas, Shape shapeDrawing, bool done, CompositeShapes composite)
         {
             var cmd = new Move(selectedElement, getPosition, RelativePoint, initialPosition, Diff, canvas, shapeDrawing, done);
@@ -42,6 +68,16 @@ namespace PaintPatterns
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="selectedElement"></param>
+        /// <param name="getPosition"></param>
+        /// <param name="initialPosition"></param>
+        /// <param name="canvas"></param>
+        /// <param name="shapeDrawing"></param>
+        /// <param name="shape"></param>
+        /// <param name="done"></param>
         public void Draw(UIElement selectedElement, Point getPosition, Point initialPosition, Canvas canvas, Shape shapeDrawing, Shape shape, bool done)
         {
             var cmd = new Draw(selectedElement, getPosition, initialPosition, canvas, shapeDrawing, shape);
@@ -53,6 +89,16 @@ namespace PaintPatterns
             }
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="selectedElement"></param>
+        /// <param name="getPosition"></param>
+        /// <param name="RelativePoint"></param>
+        /// <param name="initialPosition"></param>
+        /// <param name="canvas"></param>
+        /// <param name="shapeDrawing"></param>
+        /// <param name="composite"></param>
         public void Undo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, CompositeShapes composite)
         { 
             if (ActionsUndo.Count != 0)
@@ -86,6 +132,16 @@ namespace PaintPatterns
             
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="selectedElement"></param>
+        /// <param name="getPosition"></param>
+        /// <param name="RelativePoint"></param>
+        /// <param name="initialPosition"></param>
+        /// <param name="canvas"></param>
+        /// <param name="shapeDrawing"></param>
+        /// <param name="composite"></param>
         public void Redo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, CompositeShapes composite)
         {
             if (ActionsRedo.Count != 0)
@@ -97,6 +153,11 @@ namespace PaintPatterns
                 composite.Update(selectedElement);
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static CommandInvoker GetInstance()
         {
             return Instance;

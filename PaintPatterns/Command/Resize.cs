@@ -10,6 +10,9 @@ using System.Windows.Shapes;
 
 namespace PaintPatterns.Command
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class Resize : ICommand
     {
         private UIElement selectedElement;
@@ -21,6 +24,17 @@ namespace PaintPatterns.Command
         private bool done;
         private CompositeShapes composite;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="selectedElement"></param>
+        /// <param name="getPosition"></param>
+        /// <param name="RelativePoint"></param>
+        /// <param name="initialPosition"></param>
+        /// <param name="canvas"></param>
+        /// <param name="shapeDrawing"></param>
+        /// <param name="done"></param>
+        /// <param name="composite"></param>
         public Resize(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, bool done, CompositeShapes composite)
         {
             this.selectedElement = selectedElement;
@@ -33,8 +47,12 @@ namespace PaintPatterns.Command
             this.composite = composite;
         }
 
+        /// <summary>
+        /// Execute Resize set selectedElement Width and Height
+        /// </summary>
         public void Execute()
         {
+            //Can't have '-' height or Width so change position if wanting to draw to minus axes.
             if (getPosition.X < RelativePoint.X && getPosition.Y > RelativePoint.Y)
             {
                 selectedElement.SetValue(Canvas.LeftProperty, (double)getPosition.X);
@@ -60,15 +78,18 @@ namespace PaintPatterns.Command
                 selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)getPosition.X - (int)RelativePoint.X);
                 selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)getPosition.Y - (int)RelativePoint.Y);
             }
-            //composite.Update(selectedElement);
         }
 
+        /// <summary>
+        /// Set selectedElement back to newest Width and Height, can use same values as Execute
+        /// </summary>
         public void Redo()
         {
             if (selectedElement == null)
             {
                 selectedElement = shapeDrawing;
             }
+            //Can't have '-' height or Width so change position if wanting to draw to minus axes.
             if (getPosition.X < RelativePoint.X && getPosition.Y > RelativePoint.Y)
             {
                 selectedElement.SetValue(Canvas.LeftProperty, (double)getPosition.X);
@@ -94,15 +115,20 @@ namespace PaintPatterns.Command
                 selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)getPosition.X - (int)RelativePoint.X);
                 selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)getPosition.Y - (int)RelativePoint.Y);
             }
-            //composite.Update(shapeDrawing);
         }
 
+        /// <summary>
+        /// Set element back to previous Width and Height by using initialPosition instead of getPosition
+        /// </summary>
         public void Undo()
         {
+            //If for some reason no element is selected get the shapeDrawing
             if (selectedElement == null)
             {
                 selectedElement = shapeDrawing;
             }
+
+            //Can't have '-' height or Width so change position if wanting to draw to minus axes.
             if (initialPosition.X < RelativePoint.X && initialPosition.Y > RelativePoint.Y)
             {
                 selectedElement.SetValue(Canvas.LeftProperty, (double)initialPosition.X);
@@ -128,14 +154,21 @@ namespace PaintPatterns.Command
                 selectedElement.GetType().GetProperty("Width").SetValue(selectedElement, (int)initialPosition.X - (int)RelativePoint.X);
                 selectedElement.GetType().GetProperty("Height").SetValue(selectedElement, (int)initialPosition.Y - (int)RelativePoint.Y);
             }
-            //composite.Update(shapeDrawing);
         }
 
+        /// <summary>
+        /// return selectedElement
+        /// </summary>
+        /// <returns></returns>
         public UIElement GetElement()
         {
             return selectedElement;
         }
 
+        /// <summary>
+        /// return shapeDrawing
+        /// </summary>
+        /// <returns></returns>
         public Shape GetShape()
         {
             return shapeDrawing;

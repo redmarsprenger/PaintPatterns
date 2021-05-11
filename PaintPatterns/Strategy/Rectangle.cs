@@ -1,9 +1,15 @@
 ﻿using System.Windows.Shapes;
 
-namespace PaintPatterns.StrategyPattern
+namespace PaintPatterns.Strategy
 {
+    /// <summary>
+    /// Rectangle Strategy
+    /// </summary>
     class Rectangle : IStrategy
     {
+        /// <summary>
+        /// Execute Rectangle, Create new rectangle, set it as shapeDrawing and call CommandInvoker Draw
+        /// </summary>
         public void Execute()
         {
             System.Windows.Shapes.Rectangle rectangle = new System.Windows.Shapes.Rectangle();
