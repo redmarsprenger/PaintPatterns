@@ -10,7 +10,7 @@ using PaintPatterns.Composite;
 namespace PaintPatterns
 {
     /// <summary>
-    /// 
+    /// CommandInvoker class
     /// </summary>
     class CommandInvoker
     {
@@ -20,7 +20,7 @@ namespace PaintPatterns
         public MainWindow MainWindow;
 
         /// <summary>
-        /// 
+        /// Executes Resize command. If done true push to ActionsUndo.
         /// </summary>
         /// <param name="selectedElement"></param>
         /// <param name="getPosition"></param>
@@ -44,7 +44,7 @@ namespace PaintPatterns
         }
 
         /// <summary>
-        /// 
+        /// Executes Move command. If done true push to ActionsUndo.
         /// </summary>
         /// <param name="selectedElement"></param>
         /// <param name="getPosition"></param>
@@ -69,7 +69,7 @@ namespace PaintPatterns
         }
 
         /// <summary>
-        /// 
+        /// Executes Draw command. If done true push to ActionsUndo.
         /// </summary>
         /// <param name="selectedElement"></param>
         /// <param name="getPosition"></param>
@@ -88,9 +88,9 @@ namespace PaintPatterns
                 ActionsRedo.Clear();
             }
         }
-        
+
         /// <summary>
-        /// 
+        /// Undo, pops from ActionsUndo calls Undo command.
         /// </summary>
         /// <param name="selectedElement"></param>
         /// <param name="getPosition"></param>
@@ -100,13 +100,15 @@ namespace PaintPatterns
         /// <param name="shapeDrawing"></param>
         /// <param name="composite"></param>
         public void Undo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, CompositeShapes composite)
-        { 
+        {
+            //Check if ActionsUndo isn't empty
             if (ActionsUndo.Count != 0)
             {
                 ICommand command = ActionsUndo.Pop();
                 command.Undo();
                 ActionsRedo.Push(command);
 
+                //Element is null if undo is Draw.
                 if (command.GetElement() != null)
                 {
                     string uid = command.GetElement().Uid;
@@ -131,9 +133,9 @@ namespace PaintPatterns
             }
             
         }
-        
+
         /// <summary>
-        /// 
+        /// Redo, pops from ActionsRedo calls Redo command.
         /// </summary>
         /// <param name="selectedElement"></param>
         /// <param name="getPosition"></param>
@@ -144,6 +146,7 @@ namespace PaintPatterns
         /// <param name="composite"></param>
         public void Redo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, CompositeShapes composite)
         {
+            //Check if ActionsRedo isn't empty
             if (ActionsRedo.Count != 0)
             {
                 ICommand command = ActionsRedo.Pop();
@@ -155,9 +158,9 @@ namespace PaintPatterns
         }
 
         /// <summary>
-        /// 
+        /// Returns CommandInvoker Instance
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Instance</returns>
         public static CommandInvoker GetInstance()
         {
             return Instance;

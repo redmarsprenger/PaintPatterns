@@ -159,7 +159,7 @@ namespace PaintPatterns.Command
         /// <summary>
         /// return selectedElement
         /// </summary>
-        /// <returns></returns>
+        /// <returns>selectedElement</returns>
         public UIElement GetElement()
         {
             return selectedElement;
@@ -168,7 +168,7 @@ namespace PaintPatterns.Command
         /// <summary>
         /// return shapeDrawing
         /// </summary>
-        /// <returns></returns>
+        /// <returns>shapeDrawing</returns>
         public Shape GetShape()
         {
             return shapeDrawing;
