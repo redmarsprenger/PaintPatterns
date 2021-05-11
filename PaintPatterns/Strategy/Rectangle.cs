@@ -1,4 +1,5 @@
-﻿using System.Windows.Shapes;
+﻿using System;
+using System.Windows.Shapes;
 
 namespace PaintPatterns.Strategy
 {

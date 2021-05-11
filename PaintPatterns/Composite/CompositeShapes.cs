@@ -21,6 +21,7 @@ namespace PaintPatterns.Composite
         {
             ChildElements = new Group();
         }
+
         /// <summary>
         /// adds a shape
         /// </summary>
@@ -77,6 +78,7 @@ namespace PaintPatterns.Composite
             using (StreamWriter sw = File.CreateText(path))
             {
                 int tabs = 0;
+                //recursive call
                 ChildElements.Write(sw, tabs);
             }
         }

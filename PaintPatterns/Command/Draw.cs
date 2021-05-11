@@ -56,6 +56,9 @@ namespace PaintPatterns.Command
                 //Random color
                 newShape.Fill = (Brush)typeof(Brushes).GetProperties()[new Random().Next(typeof(Brushes).GetProperties().Length)].GetValue(null, null);
 
+                //add identifier to shape
+                newShape.Uid = Guid.NewGuid().ToString("N");
+
                 canvas.Children.Add(newShape);
                 newShape.SetValue(Canvas.LeftProperty, initialPosition.X);
                 newShape.SetValue(Canvas.TopProperty, initialPosition.Y);

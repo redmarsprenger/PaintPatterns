@@ -1,4 +1,6 @@
-﻿namespace PaintPatterns.Strategy
+﻿using System;
+
+namespace PaintPatterns.Strategy
 {
     /// <summary>
     /// Ellipse Strategy
