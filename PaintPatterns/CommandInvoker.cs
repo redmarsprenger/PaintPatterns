@@ -42,10 +42,15 @@ namespace PaintPatterns
             }
         }
 
-        public void Draw(UIElement selectedElement, Point getPosition, Point initialPosition, Canvas canvas, Shape shapeDrawing, Shape shape)
+        public void Draw(UIElement selectedElement, Point getPosition, Point initialPosition, Canvas canvas, Shape shapeDrawing, Shape shape, bool done)
         {
             var cmd = new Draw(selectedElement, getPosition, initialPosition, canvas, shapeDrawing, shape);
             cmd.Execute();
+            if (done)
+            {
+                ActionsUndo.Push(cmd);
+                ActionsRedo.Clear();
+            }
         }
         
         public void Undo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, CompositeShapes composite)
@@ -56,23 +61,26 @@ namespace PaintPatterns
                 command.Undo();
                 ActionsRedo.Push(command);
 
-                string uid = command.GetElement().Uid;
-                bool entry = false;
+                if (command.GetElement() != null)
+                {
+                    string uid = command.GetElement().Uid;
+                    bool entry = false;
 
-                //go through actions to see if there are other entries or if it is the last one
-                foreach (var item in ActionsUndo)
-                {
-                    if (item.GetShape().Uid == uid)
+                    //go through actions to see if there are other entries or if it is the last one
+                    foreach (var item in ActionsUndo)
                     {
-                        //updates the Composite cloned element
-                        composite.Update(command.GetShape());
-                        entry = true;
+                        if (item.GetShape().Uid == uid)
+                        {
+                            //updates the Composite cloned element
+                            composite.Update(command.GetShape());
+                            entry = true;
+                        }
                     }
-                }
-                if (entry == false)//if no entry is left remove it
-                {
-                    //removes the Composite cloned element
-                    composite.Remove(uid);
+                    if (entry == false)//if no entry is left remove it
+                    {
+                        //removes the Composite cloned element
+                        composite.Remove(uid);
+                    }
                 }
             }
             

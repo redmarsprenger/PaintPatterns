@@ -123,17 +123,20 @@ namespace PaintPatterns.Composite
         {
             foreach (Part item in Parts)
             {
-                if (item.Shape.Uid == element.Uid)
+                if (element != null)
                 {
-                    item.Shape = (Shape)element;
-                    item.Shape.SetValue(Canvas.LeftProperty, element.GetValue(Canvas.LeftProperty));
-                    item.Shape.SetValue(Canvas.TopProperty, element.GetValue(Canvas.TopProperty));
-                    item.Shape.GetType().GetProperty("Width").SetValue(element, element.GetType().GetProperty("Width").GetValue(element));
-                    item.Shape.GetType().GetProperty("Height").SetValue(element, element.GetType().GetProperty("Height").GetValue(element));
-                }
-                else if (item.Shape == null)
-                {
-                    Update(element);
+                    if (item.Shape.Uid == element.Uid)
+                    {
+                        item.Shape = (Shape)element;
+                        item.Shape.SetValue(Canvas.LeftProperty, element.GetValue(Canvas.LeftProperty));
+                        item.Shape.SetValue(Canvas.TopProperty, element.GetValue(Canvas.TopProperty));
+                        item.Shape.GetType().GetProperty("Width").SetValue(element, element.GetType().GetProperty("Width").GetValue(element));
+                        item.Shape.GetType().GetProperty("Height").SetValue(element, element.GetType().GetProperty("Height").GetValue(element));
+                    }
+                    else if (item.Shape == null)
+                    {
+                        Update(element);
+                    }
                 }
             }
         }

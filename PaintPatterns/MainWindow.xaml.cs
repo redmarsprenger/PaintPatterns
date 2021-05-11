@@ -166,7 +166,7 @@ namespace PaintPatterns
             {
                 if (drawing)
                 {
-                    invoker.Draw(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas, shapeDrawing, null);
+                    invoker.Draw(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas, shapeDrawing, null, true);
                 }
                 if (mouseButtonHeld && selectedElement != null && moving)
                 {
