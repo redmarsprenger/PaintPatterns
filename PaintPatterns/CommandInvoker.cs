@@ -86,6 +86,8 @@ namespace PaintPatterns
             {
                 ActionsUndo.Push(cmd);
                 ActionsRedo.Clear();
+                //updates the Composite cloned element
+                GetInstance().MainWindow.composite.Update(selectedElement);
             }
         }
 
@@ -105,31 +107,33 @@ namespace PaintPatterns
             if (ActionsUndo.Count != 0)
             {
                 ICommand command = ActionsUndo.Pop();
-                command.Undo();
-                ActionsRedo.Push(command);
+                string uid;
 
-                //Element is null if undo is Draw.
+                //if Element is null set shape as uid to delete shape.
                 if (command.GetElement() != null)
-                {
-                    string uid = command.GetElement().Uid;
-                    bool entry = false;
+                    uid = command.GetElement().Uid;
+                else
+                    uid = command.GetShape().Uid;
 
-                    //go through actions to see if there are other entries or if it is the last one
-                    foreach (var item in ActionsUndo)
+                bool entry = false;
+
+                //go through actions to see if there are other entries or if it is the last one
+                foreach (var item in ActionsUndo)
+                {
+                    if (item.GetShape().Uid == uid)
                     {
-                        if (item.GetShape().Uid == uid)
-                        {
-                            //updates the Composite cloned element
-                            composite.Update(command.GetShape());
-                            entry = true;
-                        }
-                    }
-                    if (entry == false)//if no entry is left remove it
-                    {
-                        //removes the Composite cloned element
-                        composite.Remove(uid);
+                        //updates the Composite cloned element
+                        composite.Update(command.GetShape());
+                        entry = true;
                     }
                 }
+                if (entry == false)//if no entry is left remove it
+                {
+                    //removes the Composite cloned element
+                    composite.Remove(uid);
+                }
+                command.Undo();
+                ActionsRedo.Push(command);
             }
             
         }

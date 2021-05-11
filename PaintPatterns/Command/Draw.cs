@@ -116,7 +116,7 @@ namespace PaintPatterns.Command
         /// <returns>selectedElement</returns>
         public UIElement GetElement()
         {
-            return selectedElement;
+            return shapeDrawing;
         }
 
         /// <summary>

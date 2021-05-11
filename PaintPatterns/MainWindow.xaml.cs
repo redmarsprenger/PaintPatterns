@@ -29,7 +29,7 @@ namespace PaintPatterns
         bool moving = false;
         public Shape shapeDrawing;
 
-        CompositeShapes composite;
+        public CompositeShapes composite;
 
         private static Point Diff;
         private static Point RelativePoint;
@@ -183,12 +183,8 @@ namespace PaintPatterns
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ChangeColor_Click(object sender, RoutedEventArgs e)
+        private void SaveToFile_Click(object sender, RoutedEventArgs e)
         {
-        //            if (shape == "none" && selectedShape != null)
-        //            {
-        //                selectedShape = new RedDecorator(selectedShape).ReturnShape();
-        //            }
             composite.Write();
         }
 
