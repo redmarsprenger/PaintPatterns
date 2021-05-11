@@ -19,6 +19,8 @@ namespace PaintPatterns
         private readonly Stack<Command.ICommand> ActionsRedo = new Stack<Command.ICommand>();
         public MainWindow MainWindow;
 
+        private CommandInvoker(){ }
+
         /// <summary>
         /// Executes Resize command. If done true push to ActionsUndo.
         /// </summary>
@@ -151,10 +153,10 @@ namespace PaintPatterns
             if (ActionsRedo.Count != 0)
             {
                 ICommand command = ActionsRedo.Pop();
+                //updates the Composite cloned element
+                GetInstance().MainWindow.composite.Update(selectedElement);
                 command.Redo();
                 ActionsUndo.Push(command);
-                //updates the Composite cloned element
-                composite.Update(selectedElement);
             }
         }
 
