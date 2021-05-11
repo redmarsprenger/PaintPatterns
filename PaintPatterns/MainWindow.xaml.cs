@@ -18,7 +18,6 @@ namespace PaintPatterns
         private string shape = "none";
         public Point InitialPosition;
         public Point MousePos;
-        public Point SelectPos;
         private bool mouseButtonHeld;
 
         public UIElement selectedElement = null;
@@ -32,15 +31,14 @@ namespace PaintPatterns
 
         CompositeShapes composite;
 
-        List<String> UndoList;
-        List<String> RedoList;
-        
-        private static List<Shape> Shapes = new List<Shape>();
         private static Point Diff;
         private static Point RelativePoint;
 
         /// <summary>
-        /// 
+        /// MainWindow Constructor
+        /// InitializeComponent
+        /// Disable NoneBtn
+        /// Set composite and invoker
         /// </summary>
         public MainWindow()
         {
@@ -51,9 +49,9 @@ namespace PaintPatterns
             invoker = CommandInvoker.GetInstance();
             invoker.MainWindow = this;
         }
-        
+
         /// <summary>
-        /// 
+        /// On NoneBtn_Click disable NoneBtn enable other buttons
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -66,41 +64,44 @@ namespace PaintPatterns
         }
 
         /// <summary>
-        /// 
+        /// On EllipseBtn_Click disable EllipseBtn enable other buttons
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void RectangleBtn_Click(object sender, RoutedEventArgs e)
         {
             shape = "rectangle";
-            strategy = new Strategy.Rectangle();
             NoneBtn.IsEnabled = true;
             RectangleBtn.IsEnabled = false;
             EllipseBtn.IsEnabled = true;
+            //Set strategy to Rectangle
+            strategy = new Strategy.Rectangle();
         }
 
         /// <summary>
-        /// 
+        /// On EllipseBtn_Click disable EllipseBtn enable other buttons
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void EllipseBtn_Click(object sender, RoutedEventArgs e)
         {
             shape = "ellipse";
-            strategy = new Strategy.Ellipse();
             NoneBtn.IsEnabled = true;
             RectangleBtn.IsEnabled = true;
             EllipseBtn.IsEnabled = false;
+            //Set strategy to Ellipse
+            strategy = new Strategy.Ellipse();
         }
 
         /// <summary>
-        /// 
+        /// if shape none set selectedShape, selectedElement and RelativePoint
+        ///
+        /// if Mouse.LeftButton and shape != none execute strategy and add composite.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
             mouseButtonHeld = true;
             InitialPosition = e.GetPosition(Canvas);
             if (shape == "none")
@@ -149,7 +150,7 @@ namespace PaintPatterns
         }
 
         /// <summary>
-        /// 
+        /// Calls corresponding invoker depending on mousebutton and if drawing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -178,7 +179,7 @@ namespace PaintPatterns
         }
 
         /// <summary>
-        /// 
+        /// On ChangeColor_Click Composite Write
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -192,7 +193,8 @@ namespace PaintPatterns
         }
 
         /// <summary>
-        /// 
+        /// Do last invoker call with done=true
+        /// Reset mouseButtonHeld, firstPos, drawing, moving
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -224,7 +226,8 @@ namespace PaintPatterns
         }
 
         /// <summary>
-        /// 
+        /// CTRL+SHIFT+Z -> invoker.Redo
+        /// CTRL+Z -> invoker.Undo
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
