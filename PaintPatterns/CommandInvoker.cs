@@ -110,10 +110,7 @@ namespace PaintPatterns
                 string uid;
 
                 //if Element is null set shape as uid to delete shape.
-                if (command.GetElement() != null)
-                    uid = command.GetElement().Uid;
-                else
-                    uid = command.GetShape().Uid;
+                uid = command.GetElement() != null ? command.GetElement().Uid : command.GetShape().Uid;
 
                 bool entry = false;
 
