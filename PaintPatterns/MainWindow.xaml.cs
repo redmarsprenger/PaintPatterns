@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using PaintPatterns.StrategyPattern;
+using PaintPatterns.Strategy;
 
 namespace PaintPatterns
 {
@@ -73,7 +73,7 @@ namespace PaintPatterns
         private void RectangleBtn_Click(object sender, RoutedEventArgs e)
         {
             shape = "rectangle";
-            strategy = new StrategyPattern.Rectangle();
+            strategy = new Strategy.Rectangle();
             NoneBtn.IsEnabled = true;
             RectangleBtn.IsEnabled = false;
             EllipseBtn.IsEnabled = true;
@@ -87,7 +87,7 @@ namespace PaintPatterns
         private void EllipseBtn_Click(object sender, RoutedEventArgs e)
         {
             shape = "ellipse";
-            strategy = new StrategyPattern.Ellipse();
+            strategy = new Strategy.Ellipse();
             NoneBtn.IsEnabled = true;
             RectangleBtn.IsEnabled = true;
             EllipseBtn.IsEnabled = false;
