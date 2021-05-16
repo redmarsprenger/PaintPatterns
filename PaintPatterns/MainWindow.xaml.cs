@@ -143,7 +143,7 @@ namespace PaintPatterns
 
                         if (shape != "ellipse" && shape != "rectangle") return;
                         strategy.Execute();
-                        composite.Add(shapeDrawing);
+                        //composite.Add(shapeDrawing);
                     }
                 }
             }
@@ -162,7 +162,7 @@ namespace PaintPatterns
             {
                 if (drawing)
                 {
-                    invoker.Draw(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas, shapeDrawing, null, false);
+                    invoker.Draw(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas, shapeDrawing, null, false, composite);
                 }
                 if (mouseButtonHeld && selectedElement != null && moving)
                 {
@@ -200,7 +200,7 @@ namespace PaintPatterns
             {
                 if (drawing)
                 {
-                    invoker.Draw(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas, shapeDrawing, null, true);
+                    invoker.Draw(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas, shapeDrawing, null, true, composite);
                 }
                 if (mouseButtonHeld && selectedElement != null && moving)
                 {

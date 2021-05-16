@@ -78,7 +78,7 @@ namespace PaintPatterns
         /// <param name="shapeDrawing"></param>
         /// <param name="shape"></param>
         /// <param name="done"></param>
-        public void Draw(UIElement selectedElement, Point getPosition, Point initialPosition, Canvas canvas, Shape shapeDrawing, Shape shape, bool done)
+        public void Draw(UIElement selectedElement, Point getPosition, Point initialPosition, Canvas canvas, Shape shapeDrawing, Shape shape, bool done, CompositeShapes composite)
         {
             var cmd = new Draw(selectedElement, getPosition, initialPosition, canvas, shapeDrawing, shape);
             cmd.Execute();
@@ -87,7 +87,7 @@ namespace PaintPatterns
                 ActionsUndo.Push(cmd);
                 ActionsRedo.Clear();
                 //updates the Composite cloned element
-                GetInstance().MainWindow.composite.Update(selectedElement);
+                composite.Add(shapeDrawing);
             }
         }
 
