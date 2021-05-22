@@ -22,6 +22,7 @@ namespace PaintPatterns
 
         public UIElement selectedElement = null;
         Shape selectedShape;
+        private readonly Stack<Shape> selectedShapes = new Stack<Shape>();
         IStrategy strategy;
 
         Point firstPos;
@@ -106,8 +107,18 @@ namespace PaintPatterns
             InitialPosition = e.GetPosition(Canvas);
             if (shape == "none")
             {
-                selectedElement?.GetType().GetProperty("Stroke")?.SetValue(selectedElement, Brushes.Black);
-                if (e.Source != Canvas)
+                if ((Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.Control)
+                {
+                    if (selectedShapes != null)
+                    {
+                        while (selectedShapes?.Count > 0)
+                        {
+                            selectedShapes.Pop().Stroke = Brushes.Black;
+                        }
+                        selectedShapes?.Clear();
+                    }
+                }
+                if (!Equals(e.Source, Canvas))
                 {
                     if (!moving)
                     {
@@ -125,6 +136,7 @@ namespace PaintPatterns
 
                         selectedElement.GetType().GetProperty("Stroke")?.SetValue(selectedElement, Brushes.Blue);
                         RelativePoint = selectedElement.TransformToAncestor(Canvas).Transform(new Point(0, 0));
+                        selectedShapes?.Push(selectedShape);
                     }
                 }
             }

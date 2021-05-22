@@ -58,6 +58,8 @@
     <Compile Include="Strategy\Ellipse.cs" />
     <Compile Include="Strategy\IStrategy.cs" />
     <Compile Include="Strategy\Rectangle.cs" />
+    <Compile Include="Visitor\IVisitor.cs" />
+    <Compile Include="Visitor\SaveVisitor.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
