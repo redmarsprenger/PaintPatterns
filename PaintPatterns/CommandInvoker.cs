@@ -160,6 +160,18 @@ namespace PaintPatterns
             }
         }
 
+        public void Save(CompositeShapes composite)
+        {
+            var cmd = new Save(composite);
+            cmd.Execute();
+        }
+
+        public void Load(CompositeShapes composite)
+        {
+            var cmd = new Load(composite);
+            cmd.Execute();
+        }
+
         /// <summary>
         /// Returns CommandInvoker Instance
         /// </summary>

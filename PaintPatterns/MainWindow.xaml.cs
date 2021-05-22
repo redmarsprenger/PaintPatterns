@@ -191,16 +191,6 @@ namespace PaintPatterns
         }
 
         /// <summary>
-        /// On ChangeColor_Click Composite Write
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SaveToFile_Click(object sender, RoutedEventArgs e)
-        {
-            composite.Write();
-        }
-
-        /// <summary>
         /// Do last invoker call with done=true
         /// Reset mouseButtonHeld, firstPos, drawing, moving
         /// </summary>
@@ -252,6 +242,16 @@ namespace PaintPatterns
                     invoker.Undo(selectedElement, firstPos, RelativePoint, InitialPosition, Canvas, shapeDrawing, composite);
                 }
             }
+        }
+
+        /// <summary>
+        /// On ChangeColor_Click Composite Write
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveToFile_Click(object sender, RoutedEventArgs e)
+        {
+            invoker.Save(composite);
         }
 
         private void LoadFromFile_Click(object sender, RoutedEventArgs e)
