@@ -183,5 +183,11 @@ namespace PaintPatterns
         {
             return Instance;
         }
+
+        public void Group(CompositeShapes composite)
+        {
+            var cmd = new Command.Group(composite);
+            cmd.Execute();
+        }
     }
 }

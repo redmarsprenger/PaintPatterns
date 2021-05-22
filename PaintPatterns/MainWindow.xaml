@@ -26,7 +26,10 @@
                 HorizontalAlignment="Right" FontSize="13" Margin="0,0,10,-60"
         />
         <Button Width="70" Height="50"  Name="EllipseBtn" Content="Ellipse" Click="EllipseBtn_Click"  
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="13" Margin="0,0,10,10"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="13" Margin="0,0,10,364"
+        />
+        <Button Width="70" Height="50"  x:Name="GroupBtn" Content="Group" Click="GroupBtn_Click"
+            HorizontalAlignment="Right" FontSize="13" Margin="0,318,10,121"
         />
 
     </Grid>
