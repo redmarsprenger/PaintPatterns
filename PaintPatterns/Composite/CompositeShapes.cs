@@ -12,14 +12,14 @@ namespace PaintPatterns.Composite
 {
     public class CompositeShapes
     {
-        private Group ChildElements = new Group();
+        private Group PaintObjects = new Group();
 
         /// <summary>
         /// initialise CompositeShapes
         /// </summary>
         public CompositeShapes()
         {
-            ChildElements = new Group();
+            PaintObjects = new Group();
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace PaintPatterns.Composite
         /// <param name="shape"></param>
         public void Add(Shape shape)
         {
-            ChildElements.Add(new Part(shape));
+            PaintObjects.Add(new Figure(shape));
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace PaintPatterns.Composite
         /// <param name="group"></param>
         public void Add(Group group)
         {
-            ChildElements.Add(new Part(group));
+            PaintObjects.Add(group);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace PaintPatterns.Composite
         /// <param name="element"></param>
         public void Update(UIElement element)
         {
-            ChildElements.Update(element);
+            PaintObjects.Update(element);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace PaintPatterns.Composite
         /// <param name="shape"></param>
         public void Update(Shape shape)
         {
-            ChildElements.Update(shape);
+            PaintObjects.Update(shape);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace PaintPatterns.Composite
         /// <param name="uid"></param>
         public void Remove(string uid)
         {
-            ChildElements.Remove(uid);
+            PaintObjects.Remove(uid);
         }
 
         /// <summary>
@@ -79,31 +79,73 @@ namespace PaintPatterns.Composite
             {
                 int tabs = 0;
                 //recursive call
-                ChildElements.Write(sw, tabs);
+                PaintObjects.WriteContent(sw, tabs);
             }
         }
     }
 
-    public class Group
+    public interface IComponent
+    {
+        //void GetContent();
+        //void UpdateContent();
+        //int Definer();
+        void WriteContent(StreamWriter sw, int tabs);
+    }
+
+    public class Figure : IComponent
+    {
+        private Shape figure;
+        public Figure(Shape shape)
+        {
+            figure = shape;
+        }
+        public Shape GetFigure()
+        {
+            return figure;
+        }
+
+        public void UpdateContent(Shape shape)
+        {
+            figure = shape;
+        }
+
+        public void WriteContent(StreamWriter sw, int tabs)
+        {
+            for (int i = 0; i < tabs; i++)
+            {
+                sw.Write("    ");
+            }
+            if (typeof(Rectangle).Equals(figure.GetType()))
+            {
+                sw.WriteLine("rectangle " + figure.GetValue(Canvas.LeftProperty) + " " + figure.GetValue(Canvas.TopProperty) + " " + figure.Width + " " + figure.Height);
+            }
+            else
+            {
+                sw.WriteLine("ellipse " + figure.GetValue(Canvas.LeftProperty) + " " + figure.GetValue(Canvas.TopProperty) + " " + figure.Width + " " + figure.Height);
+            }
+        }
+    }
+
+    public class Group:IComponent
     {
         /// <summary>
         /// list of parts
         /// </summary>
-        public List<Part> Parts;
-        
+        public List<IComponent> Parts;
+
         /// <summary>
         /// initialises a Group object
         /// </summary>
         public Group()
         {
-            Parts = new List<Part>();
+            Parts = new List<IComponent>();
         }
 
         /// <summary>
         /// Adds a part to Parts
         /// </summary>
         /// <param name="part"></param>
-        public void Add(Part part)
+        public void Add(Figure part)
         {
             Parts.Add(part);
         }
@@ -114,8 +156,13 @@ namespace PaintPatterns.Composite
         /// <param name="group"></param>
         public void Add(Group group)
         {
-            Parts.Add(new Part(group));
+            Parts.Add(new Group());
         }
+
+        //public void Update()
+        //{
+        //    Add()
+        //}
 
         /// <summary>
         /// Updates the clone using the updated UIElement
@@ -123,22 +170,27 @@ namespace PaintPatterns.Composite
         /// <param name="element"></param>
         public void Update(UIElement element)
         {
-            foreach (Part item in Parts)
+            foreach (IComponent item in Parts)
             {
-                if (element != null)
+                if (typeof(Figure).Equals(item.GetType()))
                 {
-                    if (item.Shape.Uid == element.Uid)
+                    //if (element != null)
+                    Figure figure = (Figure)item;
+                
+                    if (figure.GetFigure().Uid == element.Uid)
                     {
-                        item.Shape = (Shape)element;
-                        item.Shape.SetValue(Canvas.LeftProperty, element.GetValue(Canvas.LeftProperty));
-                        item.Shape.SetValue(Canvas.TopProperty, element.GetValue(Canvas.TopProperty));
-                        item.Shape.GetType().GetProperty("Width").SetValue(element, element.GetType().GetProperty("Width").GetValue(element));
-                        item.Shape.GetType().GetProperty("Height").SetValue(element, element.GetType().GetProperty("Height").GetValue(element));
+                        figure.UpdateContent((Shape)element);
+                        //item.Shape.SetValue(Canvas.LeftProperty, element.GetValue(Canvas.LeftProperty));
+                        //item.Shape.SetValue(Canvas.TopProperty, element.GetValue(Canvas.TopProperty));
+                        //item.Shape.GetType().GetProperty("Width").SetValue(element, element.GetType().GetProperty("Width").GetValue(element));
+                        //item.Shape.GetType().GetProperty("Height").SetValue(element, element.GetType().GetProperty("Height").GetValue(element));
                     }
-                    else if (item.Shape == null)
-                    {
-                        Update(element);
-                    }
+                    //}
+                }
+                else if (typeof(Group).Equals(item.GetType()))
+                {
+                    Group group = (Group)item;
+                    group.Update(element);
                 }
             }
         }
@@ -147,17 +199,33 @@ namespace PaintPatterns.Composite
         /// Updates the clonse using the updated Shape
         /// </summary>
         /// <param name="shape"></param>
-        public void Update(Shape shape)
+        public void Update(Shape element)
         {
-            foreach (Part item in Parts)
+            foreach (IComponent item in Parts)
             {
-                if (item.Shape.Uid == shape.Uid)
+                if (typeof(Figure).Equals(item.GetType()))
                 {
-                    item.Shape = shape;
+                    //if (element != null)
+                    Figure figure = (Figure)item;
+
+                    if (figure.GetFigure().Uid == element.Uid)
+                    {
+                        figure.UpdateContent(element);
+                        //item.Shape.SetValue(Canvas.LeftProperty, element.GetValue(Canvas.LeftProperty));
+                        //item.Shape.SetValue(Canvas.TopProperty, element.GetValue(Canvas.TopProperty));
+                        //item.Shape.GetType().GetProperty("Width").SetValue(element, element.GetType().GetProperty("Width").GetValue(element));
+                        //item.Shape.GetType().GetProperty("Height").SetValue(element, element.GetType().GetProperty("Height").GetValue(element));
+                    }
+                    //else if (item.Shape == null)
+                    //{
+                    //    Update(element);
+                    //}
+                    //}
                 }
-                else if (item.Shape == null)
+                else if (typeof(Group).Equals(item.GetType()))
                 {
-                    Update(shape);
+                    Group group = (Group)item;
+                    group.Update(element);
                 }
             }
         }
@@ -168,17 +236,26 @@ namespace PaintPatterns.Composite
         /// <param name="uid"></param>
         public void Remove(string uid)
         {
-            Part part = null;
-            foreach (Part item in Parts)
+            IComponent part = null;
+            foreach (IComponent item in Parts)
             {
-                if (item.Shape.Uid == uid)
+                if (typeof(Figure).Equals(item.GetType()))
                 {
-                    //so the list doesn't crash because of a removed entry
-                    part = item;
+                    Figure figure = (Figure)item;
+                    if (figure.GetFigure().Uid == uid)
+                    {
+                        //so the list doesn't crash because of a removed entry
+                        part = item;
+                    }
+                    //else if (item.Shape == null)
+                    //{
+                    //    Remove(uid);
+                    //}
                 }
-                else if (item.Shape == null)
+                if (typeof(Group).Equals(item.GetType()))
                 {
-                    Remove(uid);
+                    Group group = (Group)item;
+                    group.Remove(uid);
                 }
             }
             Parts.Remove(part);
@@ -189,72 +266,24 @@ namespace PaintPatterns.Composite
         /// </summary>
         /// <param name="sw"></param>
         /// <param name="tabs"></param>
-        public void Write(StreamWriter sw, int tabs)
+        public void WriteContent(StreamWriter sw, int tabs)
         {
             //write group stuff
             sw.WriteLine("group " + Parts.Count.ToString());
 
             tabs++; // increment tabs for the rest of shapes and a possible group
-            foreach (Part item in Parts)
+            foreach (IComponent item in Parts)
             {
-                if (item.Group != null)
-                {
-                    item.Group.Write(sw, tabs);
-                }
-                else
-                {
-                    item.Write(sw, tabs);
-                }
-            }
-        }
-
-    }
-
-    public class Part
-    {
-        /// <summary>
-        /// These are either a Shape or a Group never both
-        /// </summary>
-        public Shape Shape = null;
-        public Group Group = null;
-
-        /// <summary>
-        /// Creates a Part using a Shape
-        /// </summary>
-        /// <param name="shape"></param>
-        public Part(Shape shape)
-        {
-            Shape = shape;
-        }
-
-        /// <summary>
-        /// Creates a Part using a Group
-        /// </summary>
-        /// <param name="group"></param>
-        public Part(Group group)
-        {
-            Group = group;
-        }
-
-        /// <summary>
-        /// Writes the Part data to a file
-        /// </summary>
-        /// <param name="sw"></param>
-        /// <param name="tabs"></param>
-        public void Write(StreamWriter sw, int tabs)
-        {
-            for (int i = 0; i < tabs; i++)
-            {
-                sw.Write("    ");
-            }
-            if (typeof(Rectangle).Equals(Shape.GetType()))
-            {
-                sw.WriteLine("rectangle " + Shape.GetValue(Canvas.LeftProperty) + " " + Shape.GetValue(Canvas.TopProperty) + " " + Shape.Width + " " + Shape.Height);
-            }
-            else
-            {
-                sw.WriteLine("ellipse " + Shape.GetValue(Canvas.LeftProperty) + " " + Shape.GetValue(Canvas.TopProperty) + " " + Shape.Width + " " + Shape.Height);
+                //if (typeof(Figure).Equals(item.GetType()))
+                //{
+                    item.WriteContent(sw, tabs);
+                //}
+                //else if (typeof(Group).Equals(item.GetType()))
+                //{
+                    //item.WriteContent(sw, tabs);
+                //}
             }
         }
     }
+
 }
