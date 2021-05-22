@@ -82,6 +82,15 @@ namespace PaintPatterns.Composite
                 PaintObjects.WriteContent(sw, tabs);
             }
         }
+
+
+        /// <summary>
+        /// Loads content from file to canvas
+        /// </summary>
+        public void Load()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public interface IComponent

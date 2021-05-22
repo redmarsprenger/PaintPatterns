@@ -241,5 +241,10 @@ namespace PaintPatterns
                 }
             }
         }
+
+        private void LoadFromFile_Click(object sender, RoutedEventArgs e)
+        {
+            composite.Load();
+        }
     }
 }
