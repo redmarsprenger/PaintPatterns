@@ -5,6 +5,7 @@ namespace PaintPatterns.Visitor
 {
     public interface IVisitor
     {
-        void Execute();
+        void VisitFigure(Figure figure);
+        void VisitGroup(Group group);
     }
 }

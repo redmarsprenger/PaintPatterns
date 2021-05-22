@@ -57,6 +57,9 @@
     </ApplicationDefinition>
     <Compile Include="Command\Load.cs" />
     <Compile Include="Command\Save.cs" />
+    <Compile Include="Composite\Figure.cs" />
+    <Compile Include="Composite\Group.cs" />
+    <Compile Include="Composite\IComponent.cs" />
     <Compile Include="Strategy\Ellipse.cs" />
     <Compile Include="Strategy\IStrategy.cs" />
     <Compile Include="Strategy\Rectangle.cs" />
@@ -72,7 +75,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CommandInvoker.cs" />
-    <Compile Include="Command\IActions.cs" />
     <Compile Include="Command\Commands\DrawCommand.cs" />
     <Compile Include="Command\Commands\MoveCommand.cs" />
     <Compile Include="Command\Commands\RedoCommand.cs" />
@@ -83,8 +85,6 @@
     <Compile Include="Command\Move.cs" />
     <Compile Include="Command\Resize.cs" />
     <Compile Include="Composite\CompositeShapes.cs" />
-    <Compile Include="Command\Select.cs" />
-    <Compile Include="Command\Unselect.cs" />
     <Compile Include="Decorator.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

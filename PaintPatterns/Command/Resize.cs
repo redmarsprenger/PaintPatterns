@@ -1,5 +1,4 @@
-﻿using PaintPatterns.Composite;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +21,6 @@ namespace PaintPatterns.Command
         private Canvas canvas;
         private Shape shapeDrawing;
         private bool done;
-        private CompositeShapes composite;
 
         /// <summary>
         /// 
@@ -34,8 +32,7 @@ namespace PaintPatterns.Command
         /// <param name="canvas"></param>
         /// <param name="shapeDrawing"></param>
         /// <param name="done"></param>
-        /// <param name="composite"></param>
-        public Resize(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, bool done, CompositeShapes composite)
+        public Resize(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, bool done)
         {
             this.selectedElement = selectedElement;
             this.getPosition = getPosition;
@@ -44,7 +41,6 @@ namespace PaintPatterns.Command
             this.canvas = canvas;
             this.shapeDrawing = shapeDrawing;
             this.done = done;
-            this.composite = composite;
         }
 
         /// <summary>

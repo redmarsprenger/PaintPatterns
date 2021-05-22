@@ -8,41 +8,51 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 using PaintPatterns.Composite;
+using PaintPatterns.Visitor;
 
 namespace PaintPatterns.Command
 {
-    class Save
+    class Save: ICommand
     {
-        private readonly CompositeShapes composite;
-        public Save(CompositeShapes composite)
+        private readonly CommandInvoker invoker;
+
+        public Save()
         {
-            this.composite = composite;
+            this.invoker = CommandInvoker.GetInstance();
         }
 
-        public void Execute()
-        {
-            //Do visitor shit
-            composite.Write();
-        }
+    public void Execute()
+    {
+        //Do visitor shit
+        //new SaveVisitor();
 
-        public void Redo()
-        {
-            throw new NotImplementedException();
-        }
+        string path = System.IO.Directory.GetCurrentDirectory() + "help.txt";
 
-        public void Undo()
+        //get all the data and write it out
+        using (StreamWriter sw = File.CreateText(path))
         {
-            throw new NotImplementedException();
+            invoker.composite.GetPaintObjects().Accept(new SaveVisitor(sw));
         }
+    }
 
-        public UIElement GetElement()
-        {
-            return null;
-        }
+    public void Redo()
+    {
+        throw new NotImplementedException();
+    }
 
-        public Shape GetShape()
-        {
-            return null;
-        }
+    public void Undo()
+    {
+        throw new NotImplementedException();
+    }
+
+    public UIElement GetElement()
+    {
+        return null;
+    }
+
+    public Shape GetShape()
+    {
+        return null;
+    }
     }
 }

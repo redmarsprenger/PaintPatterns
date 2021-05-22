@@ -22,8 +22,7 @@ namespace PaintPatterns.Strategy
                     CommandInvoker.GetInstance().MainWindow.Canvas,
                     CommandInvoker.GetInstance().MainWindow.shapeDrawing,
                     ellipse,
-                    false,
-                    CommandInvoker.GetInstance().MainWindow.composite
+                    false
                     );
         }
     }

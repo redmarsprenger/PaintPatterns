@@ -30,8 +30,6 @@ namespace PaintPatterns
         bool moving = false;
         public Shape shapeDrawing;
 
-        public CompositeShapes composite;
-
         private static Point Diff;
         private static Point RelativePoint;
 
@@ -46,7 +44,6 @@ namespace PaintPatterns
             InitializeComponent();
             NoneBtn.IsEnabled = false;
 
-            composite = new CompositeShapes();
             invoker = CommandInvoker.GetInstance();
             invoker.MainWindow = this;
         }
@@ -174,18 +171,18 @@ namespace PaintPatterns
             {
                 if (drawing)
                 {
-                    invoker.Draw(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas, shapeDrawing, null, false, composite);
+                    invoker.Draw(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas, shapeDrawing, null, false);
                 }
                 if (mouseButtonHeld && selectedElement != null && moving)
                 {
-                    invoker.Move(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Diff, Canvas, shapeDrawing, false, composite);
+                    invoker.Move(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Diff, Canvas, shapeDrawing, false);
                 }
             }
             else if (Mouse.RightButton == MouseButtonState.Pressed && drawing)
             {
                 if (shape == "none")
                 {
-                    invoker.Resize(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, false, composite);
+                    invoker.Resize(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, false);
                 }
             }
         }
@@ -202,18 +199,18 @@ namespace PaintPatterns
             {
                 if (drawing)
                 {
-                    invoker.Draw(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas, shapeDrawing, null, true, composite);
+                    invoker.Draw(selectedElement, e.GetPosition(Canvas), InitialPosition, Canvas, shapeDrawing, null, true);
                 }
                 if (mouseButtonHeld && selectedElement != null && moving)
                 {
-                    invoker.Move(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Diff, Canvas, shapeDrawing, true, composite);
+                    invoker.Move(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Diff, Canvas, shapeDrawing, true);
                 }
             }
             if (e.ChangedButton == MouseButton.Right && drawing)
             {
                 if (shape == "none")
                 {
-                    invoker.Resize(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, true, composite);
+                    invoker.Resize(selectedElement, e.GetPosition(Canvas), RelativePoint, InitialPosition, Canvas, shapeDrawing, true);
                 }
             }
 
@@ -235,11 +232,11 @@ namespace PaintPatterns
             {
                 if ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift && e.Key == Key.Z)
                 {
-                    invoker.Redo(selectedElement, firstPos, RelativePoint, InitialPosition, Canvas, shapeDrawing, composite);
+                    invoker.Redo(selectedElement, firstPos, RelativePoint, InitialPosition, Canvas, shapeDrawing);
                 }
                 else if (e.Key == Key.Z)
                 {
-                    invoker.Undo(selectedElement, firstPos, RelativePoint, InitialPosition, Canvas, shapeDrawing, composite);
+                    invoker.Undo(selectedElement, firstPos, RelativePoint, InitialPosition, Canvas, shapeDrawing);
                 }
             }
         }
@@ -251,12 +248,13 @@ namespace PaintPatterns
         /// <param name="e"></param>
         private void SaveToFile_Click(object sender, RoutedEventArgs e)
         {
-            invoker.Save(composite);
+            invoker.Save();
         }
 
         private void LoadFromFile_Click(object sender, RoutedEventArgs e)
         {
-            composite.Load();
+            invoker.Load();
+            //            composite.Load();
         }
     }
 }

@@ -14,10 +14,10 @@ namespace PaintPatterns.Command
 {
     class Load : ICommand
     {
-        private readonly CompositeShapes composite;
-        public Load(CompositeShapes composite)
+        private readonly CommandInvoker invoker;
+        public Load()
         {
-            this.composite = composite;
+            this.invoker = CommandInvoker.GetInstance();
         }
 
         public void Execute()

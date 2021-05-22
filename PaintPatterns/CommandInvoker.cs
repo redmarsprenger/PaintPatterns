@@ -18,8 +18,12 @@ namespace PaintPatterns
         private readonly Stack<Command.ICommand> ActionsUndo = new Stack<Command.ICommand>();
         private readonly Stack<Command.ICommand> ActionsRedo = new Stack<Command.ICommand>();
         public MainWindow MainWindow;
+        public CompositeShapes composite;
 
-        private CommandInvoker(){ }
+        private CommandInvoker()
+        {
+            composite = new CompositeShapes();
+        }
 
         /// <summary>
         /// Executes Resize command. If done true push to ActionsUndo.
@@ -31,10 +35,9 @@ namespace PaintPatterns
         /// <param name="canvas"></param>
         /// <param name="shapeDrawing"></param>
         /// <param name="done"></param>
-        /// <param name="composite"></param>
-        public void Resize(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, bool done, CompositeShapes composite)
+        public void Resize(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, bool done)
         {
-            var cmd = new Resize(selectedElement, getPosition, RelativePoint, initialPosition, canvas, shapeDrawing, done, composite);
+            var cmd = new Resize(selectedElement, getPosition, RelativePoint, initialPosition, canvas, shapeDrawing, done);
             cmd.Execute();
             if (done)
             {
@@ -57,7 +60,7 @@ namespace PaintPatterns
         /// <param name="shapeDrawing"></param>
         /// <param name="done"></param>
         /// <param name="composite"></param>
-        public void Move(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Point Diff, Canvas canvas, Shape shapeDrawing, bool done, CompositeShapes composite)
+        public void Move(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Point Diff, Canvas canvas, Shape shapeDrawing, bool done)
         {
             var cmd = new Move(selectedElement, getPosition, RelativePoint, initialPosition, Diff, canvas, shapeDrawing, done);
             cmd.Execute();
@@ -80,7 +83,7 @@ namespace PaintPatterns
         /// <param name="shapeDrawing"></param>
         /// <param name="shape"></param>
         /// <param name="done"></param>
-        public void Draw(UIElement selectedElement, Point getPosition, Point initialPosition, Canvas canvas, Shape shapeDrawing, Shape shape, bool done, CompositeShapes composite)
+        public void Draw(UIElement selectedElement, Point getPosition, Point initialPosition, Canvas canvas, Shape shapeDrawing, Shape shape, bool done)
         {
             var cmd = new Draw(selectedElement, getPosition, initialPosition, canvas, shapeDrawing, shape);
             cmd.Execute();
@@ -103,7 +106,7 @@ namespace PaintPatterns
         /// <param name="canvas"></param>
         /// <param name="shapeDrawing"></param>
         /// <param name="composite"></param>
-        public void Undo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, CompositeShapes composite)
+        public void Undo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing)
         {
             //Check if ActionsUndo isn't empty
             if (ActionsUndo.Count != 0)
@@ -147,28 +150,28 @@ namespace PaintPatterns
         /// <param name="canvas"></param>
         /// <param name="shapeDrawing"></param>
         /// <param name="composite"></param>
-        public void Redo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing, CompositeShapes composite)
+        public void Redo(UIElement selectedElement, Point getPosition, Point RelativePoint, Point initialPosition, Canvas canvas, Shape shapeDrawing)
         {
             //Check if ActionsRedo isn't empty
             if (ActionsRedo.Count != 0)
             {
                 ICommand command = ActionsRedo.Pop();
                 //updates the Composite cloned element
-                GetInstance().MainWindow.composite.Update(selectedElement);
+                composite.Update(selectedElement);
                 command.Redo();
                 ActionsUndo.Push(command);
             }
         }
 
-        public void Save(CompositeShapes composite)
+        public void Save()
         {
-            var cmd = new Save(composite);
+            var cmd = new Save();
             cmd.Execute();
         }
 
-        public void Load(CompositeShapes composite)
+        public void Load()
         {
-            var cmd = new Load(composite);
+            var cmd = new Load();
             cmd.Execute();
         }
 
