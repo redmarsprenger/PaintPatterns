@@ -11,16 +11,20 @@ namespace PaintPatterns.Command
 {
     class Group : ICommand
     {
-        private readonly CompositeShapes composite;
+        //private readonly CompositeShapes composite;
+        private readonly Stack<Shape> shapes;
+        private readonly Composite.Group group;
 
-        public Group(CompositeShapes composite)
+        public Group(Stack<Shape> shapes)
         {
-            this.composite = composite;
+            this.shapes = shapes;
+            group = new Composite.Group(this.shapes);
         }
 
         public void Execute()
         {
-            composite.add
+            //composite.Add(shapes);
+            //this.group = new Group(shapes);
         }
 
         public UIElement GetElement()
@@ -33,6 +37,11 @@ namespace PaintPatterns.Command
             return null;
         }
 
+        public Composite.Group GetGroup()
+        {
+            return group;
+        }
+
         public void Redo()
         {
             throw new NotImplementedException();
@@ -41,6 +50,11 @@ namespace PaintPatterns.Command
         public void Undo()
         {
             throw new NotImplementedException();
+        }
+
+        Composite.Group ICommand.GetGroup()
+        {
+            return group;
         }
     }
 }

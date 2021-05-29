@@ -43,5 +43,15 @@ namespace PaintPatterns.Command
         {
             return null;
         }
+
+        public Stack<Shape> GetStack()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Composite.Group GetGroup()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

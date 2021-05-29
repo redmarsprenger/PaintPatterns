@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\Group.cs" />
     <Compile Include="Command\Load.cs" />
     <Compile Include="Command\Save.cs" />
     <Compile Include="Composite\Figure.cs" />

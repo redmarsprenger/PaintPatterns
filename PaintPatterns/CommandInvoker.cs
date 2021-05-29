@@ -157,7 +157,7 @@ namespace PaintPatterns
             {
                 ICommand command = ActionsRedo.Pop();
                 //updates the Composite cloned element
-                composite.Update(selectedElement);
+                composite.Add(shapeDrawing);
                 command.Redo();
                 ActionsUndo.Push(command);
             }
@@ -184,10 +184,11 @@ namespace PaintPatterns
             return Instance;
         }
 
-        public void Group(CompositeShapes composite)
+        public void Group(Stack<Shape> stack)
         {
-            var cmd = new Command.Group(composite);
+            var cmd = new Command.Group(stack);
             cmd.Execute();
+            composite.Add(cmd.GetGroup());
         }
     }
 }

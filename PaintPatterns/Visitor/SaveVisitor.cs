@@ -39,7 +39,7 @@ namespace PaintPatterns.Visitor
             string indent = "";
             int childCount = 0;
 
-            foreach (IComponent tempChild in group.GetParts())
+            foreach (IComponent tempChild in group.GetParts().Values)
             {
                 if (tempChild is Figure)
                 {
@@ -56,7 +56,7 @@ namespace PaintPatterns.Visitor
             lines.Add(line);
             tabs++;
 
-            foreach (IComponent figure in group.GetParts())
+            foreach (IComponent figure in group.GetParts().Values)
             {
                 figure.Accept(this);
             }

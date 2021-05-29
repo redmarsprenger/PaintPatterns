@@ -28,7 +28,7 @@ namespace PaintPatterns.Composite
         /// <param name="shape"></param>
         public void Add(Shape shape)
         {
-            PaintObjects.Add(new Figure(shape));
+            PaintObjects.Add(shape);
         }
 
         /// <summary>
@@ -37,6 +37,22 @@ namespace PaintPatterns.Composite
         /// <param name="group"></param>
         public void Add(Group group)
         {
+            ////go through the group parts which are always shapes convert them to figures add to a group an insert in the first selected shape spot uid/dictionary id
+            //foreach (IComponent item in group.Parts.Values)
+            //{
+            //    //go through the given group values and search for the ones in compositeShapes then remove those and insert the group in the highest id of the selected shapes
+            //    if (typeof(Figure).Equals(item.GetType()))
+            //    {
+            //        //Figure figure = item;
+            //        PaintObjects.Add((Figure)item);
+
+            //    }
+            //}
+            foreach (string key in group.Parts.Keys)
+            {
+                PaintObjects.Remove(key);
+            }
+
             PaintObjects.Add(group);
         }
 

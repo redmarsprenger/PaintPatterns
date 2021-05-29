@@ -15,23 +15,36 @@ namespace PaintPatterns.Composite
         /// <summary>
         /// list of parts
         /// </summary>
-        public List<IComponent> Parts;
+        public Dictionary<string, IComponent> Parts;
 
         /// <summary>
         /// initialises a Group object
         /// </summary>
         public Group()
         {
-            Parts = new List<IComponent>();
+            Parts = new Dictionary<string, IComponent>();
+        }
+
+        public Group(Stack<Shape> shapes)
+        {
+            Parts = new Dictionary<string, IComponent>();
+            foreach (Shape shape in shapes)
+            {
+                string key = shape.Uid;
+                Figure figure = new Figure(shape);
+                Parts.Add(key, figure);
+                //key++;
+            }
         }
 
         /// <summary>
         /// Adds a part to Parts
         /// </summary>
         /// <param name="part"></param>
-        public void Add(Figure part)
+        public void Add(Shape shape)
         {
-            Parts.Add(part);
+            Figure figure = new Figure(shape);
+            Parts.Add(shape.Uid, figure);
         }
 
         /// <summary>
@@ -40,7 +53,7 @@ namespace PaintPatterns.Composite
         /// <param name="group"></param>
         public void Add(Group group)
         {
-            Parts.Add(new Group());
+            Parts.Add(Parts.Count.ToString(), group);
         }
 
         /// <summary>
@@ -49,7 +62,7 @@ namespace PaintPatterns.Composite
         /// <param name="element"></param>
         public void Update(UIElement element)
         {
-            foreach (IComponent item in Parts)
+            foreach (IComponent item in Parts.Values)
             {
                 if (typeof(Figure).Equals(item.GetType()))
                 {
@@ -80,7 +93,7 @@ namespace PaintPatterns.Composite
         /// <param name="shape"></param>
         public void Update(Shape element)
         {
-            foreach (IComponent item in Parts)
+            foreach (IComponent item in Parts.Values)
             {
                 if (typeof(Figure).Equals(item.GetType()))
                 {
@@ -115,25 +128,30 @@ namespace PaintPatterns.Composite
         /// <param name="uid"></param>
         public void Remove(string uid)
         {
-            IComponent part = null;
-            foreach (IComponent item in Parts)
+            string num = "";
+            foreach (string key in Parts.Keys)
             {
+                IComponent item = null;
+                Parts.TryGetValue(key, out item);
                 if (typeof(Figure).Equals(item.GetType()))
                 {
                     Figure figure = (Figure)item;
                     if (figure.GetFigure().Uid == uid)
                     {
                         //so the list doesn't crash because of a removed entry
-                        part = item;
+                        num = key;
                     }
                 }
-                if (typeof(Group).Equals(item.GetType()))
+                if (typeof(Group).Equals(key.GetType()))
                 {
                     Group group = (Group)item;
                     group.Remove(uid);
                 }
             }
-            Parts.Remove(part);
+            if (num != "")
+            {
+                Parts.Remove(num);
+            }
         }
 
         /// <summary>
@@ -158,7 +176,7 @@ namespace PaintPatterns.Composite
             visitor.VisitGroup(this);
         }
 
-        public List<IComponent> GetParts()
+        public Dictionary<string, IComponent> GetParts()
         {
             return Parts;
         }

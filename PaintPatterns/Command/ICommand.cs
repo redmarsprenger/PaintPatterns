@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
@@ -14,6 +15,7 @@ namespace PaintPatterns.Command
         void Redo();
         UIElement GetElement();
         Shape GetShape();
+        Composite.Group GetGroup();
     }
 }
 

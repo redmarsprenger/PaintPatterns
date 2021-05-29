@@ -256,5 +256,10 @@ namespace PaintPatterns
             invoker.Load();
             //            composite.Load();
         }
+
+        private void GroupBtn_Click(object sender, RoutedEventArgs e)
+        {
+            invoker.Group(selectedShapes);
+        }
     }
 }

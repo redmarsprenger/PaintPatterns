@@ -15,7 +15,7 @@ namespace PaintPatterns.Command
     /// </summary>
     class Draw : ICommand
     {
-        private UIElement selectedElement;
+        private readonly UIElement selectedElement;
         private Point getPosition;
         private Point initialPosition;
         private Canvas canvas;
@@ -126,6 +126,16 @@ namespace PaintPatterns.Command
         public Shape GetShape()
         {
             return shapeDrawing;
+        }
+
+        public Stack<Shape> GetStack()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Composite.Group GetGroup()
+        {
+            throw new NotImplementedException();
         }
     }
 }

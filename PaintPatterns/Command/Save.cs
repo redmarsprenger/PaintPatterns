@@ -12,7 +12,7 @@ using PaintPatterns.Visitor;
 
 namespace PaintPatterns.Command
 {
-    class Save: ICommand
+    class Save : ICommand
     {
         private readonly CommandInvoker invoker;
 
@@ -21,38 +21,48 @@ namespace PaintPatterns.Command
             this.invoker = CommandInvoker.GetInstance();
         }
 
-    public void Execute()
-    {
-        //Do visitor shit
-        //new SaveVisitor();
-
-        string path = System.IO.Directory.GetCurrentDirectory() + "help.txt";
-
-        //get all the data and write it out
-        using (StreamWriter sw = File.CreateText(path))
+        public void Execute()
         {
-            invoker.composite.GetPaintObjects().Accept(new SaveVisitor(sw));
+            //Do visitor shit
+            //new SaveVisitor();
+
+            string path = System.IO.Directory.GetCurrentDirectory() + "help.txt";
+
+            //get all the data and write it out
+            using (StreamWriter sw = File.CreateText(path))
+            {
+                invoker.composite.GetPaintObjects().Accept(new SaveVisitor(sw));
+            }
         }
-    }
 
-    public void Redo()
-    {
-        throw new NotImplementedException();
-    }
+        public void Redo()
+        {
+            throw new NotImplementedException();
+        }
 
-    public void Undo()
-    {
-        throw new NotImplementedException();
-    }
+        public void Undo()
+        {
+            throw new NotImplementedException();
+        }
 
-    public UIElement GetElement()
-    {
-        return null;
-    }
+        public UIElement GetElement()
+        {
+            return null;
+        }
 
-    public Shape GetShape()
-    {
-        return null;
-    }
+        public Shape GetShape()
+        {
+            return null;
+        }
+
+        public Stack<Shape> GetStack()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Composite.Group GetGroup()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
