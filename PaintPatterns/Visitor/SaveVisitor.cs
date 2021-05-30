@@ -36,34 +36,49 @@ namespace PaintPatterns.Visitor
 
         public void VisitGroup(Group group)
         {
+
             string indent = "";
             int childCount = 0;
-
-            foreach (IComponent tempChild in group.GetParts().Values)
+            string line = "";
+            foreach (var figure in group.Parts)
             {
-                if (tempChild is Figure)
+                childCount = 0;
+                var subGroup = figure.Value as Group;
+                if (subGroup == null) continue;
+
+
+                foreach (IComponent tempChild in subGroup.GetParts().Values)
                 {
-                    childCount++;
+                    if (tempChild is Figure)
+                    {
+                        if (childCount == 0 && tabs > 0)
+                        {
+                            tabs--;
+                        }
+                        childCount++;
+                    }
+                }
+
+                for (int i = 0; i < tabs; i++)
+                {
+                    indent += "    ";
+                }
+
+                line = indent + "group" + " " + childCount;
+                lines.Add(line);
+                tabs++;
+
+                foreach (var fig in subGroup.Parts)
+                {
+                    fig.Value.Accept(this);
                 }
             }
 
-            for (int i = 0; i < tabs; i++)
-            {
-                indent += "    ";
-            }
-
-            string line = indent + "group" + " " + childCount;
-            lines.Add(line);
-            tabs++;
-
-            foreach (IComponent figure in group.GetParts().Values)
-            {
-                figure.Accept(this);
-            }
-
             foreach (string s in lines)
+            {
                 sw.WriteLine(s);
-            sw.Close();
+            }
+
         }
     }
 }

@@ -29,9 +29,13 @@ namespace PaintPatterns.Command
             string path = System.IO.Directory.GetCurrentDirectory() + "help.txt";
 
             //get all the data and write it out
-            using (StreamWriter sw = File.CreateText(path))
+            using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write))
             {
-                invoker.composite.GetPaintObjects().Accept(new SaveVisitor(sw));
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    invoker.composite.GetPaintObjects().Accept(new SaveVisitor(sw));
+                    sw.Close();
+                }
             }
         }
 
