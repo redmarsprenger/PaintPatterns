@@ -40,10 +40,10 @@ namespace PaintPatterns.Visitor
             string indent = "";
             int childCount = 0;
             string line = "";
-            foreach (var figure in group.Parts)
+            foreach (var groupPart in group.Parts)
             {
                 childCount = 0;
-                var subGroup = figure.Value as Group;
+                var subGroup = groupPart.Value as Group;
                 if (subGroup == null) continue;
 
 

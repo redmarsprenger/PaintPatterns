@@ -47,7 +47,7 @@ namespace PaintPatterns.Command
         public void Execute()
         {
             // if newShape != null set the base values for a new shape
-            if (newShape != null)
+            if (newShape != null && string.IsNullOrEmpty(newShape.Uid)) 
             {
                 newShape.Width = 20;
                 newShape.Height = 20;
