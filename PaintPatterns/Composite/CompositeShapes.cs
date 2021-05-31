@@ -41,11 +41,18 @@ namespace PaintPatterns.Composite
             string firstKey = first.Key;
 
             Group found = PaintObjects.Find(firstKey);
+            List<string> removeList = new List<string>();
 
-            foreach (string key in found.Parts.Keys)
+            foreach (string key in group.Parts.Keys)
             {
-                PaintObjects.Parts.Remove(key);
+                //PaintObjects.Remove(key);
+                removeList.Add(key);
             }
+            foreach (string key in removeList)
+            {
+                PaintObjects.Remove(key);
+            }
+            removeList.Clear();
 
             PaintObjects.Add(group);
         }
