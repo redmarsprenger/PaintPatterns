@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PaintPatterns.MainWindow" BaseTypeListCollapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAgAEAEAgICBggAAQAAACAQAAAIAAhAgRAAQAhEBBA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PaintPatterns.CommandInvoker">
+    <Position X="3" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgMAAAIAABgAAAAAEAAARBEIAAAAAQAAAAAEAAAA=</HashCode>
+      <FileName>CommandInvoker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PaintPatterns.Visitor.SaveVisitor" BaseTypeListCollapsed="true">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAgAAgAAAIAAAEAAABAAAAAAAA=</HashCode>
+      <FileName>Visitor\SaveVisitor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PaintPatterns.Strategy.Rectangle" BaseTypeListCollapsed="true">
+    <Position X="11.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Strategy\Rectangle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PaintPatterns.Strategy.Ellipse" BaseTypeListCollapsed="true">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Strategy\Ellipse.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PaintPatterns.Composite.Group" BaseTypeListCollapsed="true">
+    <Position X="4.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AYYAAAAAAAAAAAAAABAABEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Composite\Group.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PaintPatterns.Composite.Figure" BaseTypeListCollapsed="true">
+    <Position X="4.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAIAAAAAAAEAAAAAAAQAAABAAAAAAAAA=</HashCode>
+      <FileName>Composite\Figure.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PaintPatterns.Composite.CompositeShapes">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAgAAAAAAAAAAAAAAABAAAAAAAAAAAAAAQAAEAAAA=</HashCode>
+      <FileName>Composite\CompositeShapes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PaintPatterns.Command.Resize" BaseTypeListCollapsed="true">
+    <Position X="8.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAIAAAQAAABAQAAQAAACADCAAAAAgEBAAAAAAIAAA=</HashCode>
+      <FileName>Command\Resize.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PaintPatterns.Command.Save" BaseTypeListCollapsed="true">
+    <Position X="8.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAABAQAAAAAAAABCAAAAAAEBAAAAAAIAAA=</HashCode>
+      <FileName>Command\Save.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PaintPatterns.Command.Move" BaseTypeListCollapsed="true">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAgIAAAQAEABAQAAQAAICALCBAAAAgEBAAAAAgIBAA=</HashCode>
+      <FileName>Command\Move.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PaintPatterns.Command.Load" BaseTypeListCollapsed="true">
+    <Position X="6.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAgAABAQAAAAAAAABCAAAAAAEBAAAAAAIAAA=</HashCode>
+      <FileName>Command\Load.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PaintPatterns.Command.Group" BaseTypeListCollapsed="true">
+    <Position X="6.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAABAQAAAAAAAABAAAAAAAEBAAAQAAIBAA=</HashCode>
+      <FileName>Command\Group.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PaintPatterns.Command.Draw" BaseTypeListCollapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAIAAAAAAABAQAAQAAACADCAAAAAAEBAAAAAAKAAA=</HashCode>
+      <FileName>Command\Draw.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="PaintPatterns.Visitor.IVisitor">
+    <Position X="10" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Visitor\IVisitor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PaintPatterns.Strategy.IStrategy">
+    <Position X="11.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Strategy\IStrategy.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PaintPatterns.Composite.IComponent">
+    <Position X="4.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Composite\IComponent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PaintPatterns.Command.ICommand">
+    <Position X="8.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAQAAAAAAAABAAAAAAAEBAAAAAAIAAA=</HashCode>
+      <FileName>Command\ICommand.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
