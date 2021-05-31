@@ -33,7 +33,6 @@ namespace PaintPatterns.Composite
                 string key = shape.Uid;
                 Figure figure = new Figure(shape);
                 Parts.Add(key, figure);
-                //key++;
             }
         }
 
@@ -145,7 +144,7 @@ namespace PaintPatterns.Composite
                 if (typeof(Group).Equals(key.GetType()))
                 {
                     Group group = (Group)item;
-                    group.Remove(uid);
+                    group.Parts.Remove(uid);
                 }
             }
             if (num != "")
@@ -179,6 +178,30 @@ namespace PaintPatterns.Composite
         public Dictionary<string, IComponent> GetParts()
         {
             return Parts;
+        }
+
+        public Group Find(string uid)
+        {
+            Group group = null;
+            foreach (string key in Parts.Keys)
+            {
+                //IComponent component = null;
+                Parts.TryGetValue(key, out IComponent component);
+                if (typeof(Group).Equals(component.GetType()))
+                {
+                    //can't use Find from component but putting it in another variable works
+                    Group thing = (Group)component;
+                    group = thing.Find(uid);
+                }
+                if (typeof(Figure).Equals(component.GetType()))
+                {
+                    if (uid == key)
+                    {
+                        return this;
+                    }
+                }
+            }
+            return group;
         }
     }
 }
