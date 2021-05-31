@@ -59,6 +59,34 @@ namespace PaintPatterns.Composite
             PaintObjects.Add(group);
         }
 
+        /// <summary>
+        /// Adds a group
+        /// </summary>
+        /// <param name="group"></param>
+        public void AddStack(Group group)
+        {
+            var first = group.Parts.First();
+            string firstKey = first.Key;
+
+            Group found = PaintObjects.Find(firstKey);
+            List<string> removeList = new List<string>();
+
+            foreach (string key in group.Parts.Keys)
+            {
+                //PaintObjects.Remove(key);
+                removeList.Add(key);
+            }
+
+            foreach (string key in removeList)
+            {
+                PaintObjects.Remove(key);
+            }
+
+            removeList.Clear();
+
+            PaintObjects.Add(group);
+        }
+
         public Composite.Group Find(string uid)
         {
             foreach (string key in PaintObjects.Parts.Keys)

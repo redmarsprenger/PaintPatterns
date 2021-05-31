@@ -16,6 +16,7 @@ namespace PaintPatterns.Command
     class Load : ICommand
     {
         private readonly CommandInvoker invoker;
+        private Group glGroup;
         public Load()
         {
             this.invoker = CommandInvoker.GetInstance();
@@ -94,6 +95,7 @@ namespace PaintPatterns.Command
                         {
                             if (groupStack.Count != 0)
                             {
+                                
                                 invoker.Group(groupStack);
                                 groupStack.Clear();
                             }

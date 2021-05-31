@@ -212,12 +212,14 @@ namespace PaintPatterns.Composite
                     //can't use Find from component but putting it in another variable works
                     Group thing = (Group)component;
                     group = thing.Find(uid);
-
-                    //if parts is count 0 it is a newly made group so it is the group that we want
-                    if (group.Parts.Count == 0)
+                    if (group != null)
                     {
-                        //so we return component because that is the whole not edited group
-                        return (Group)component;
+                        //if parts is count 0 it is a newly made group so it is the group that we want
+                        if (group.Parts.Count == 0)
+                        {
+                            //so we return component because that is the whole not edited group
+                            return (Group)component;
+                        }
                     }
                 }
                 if (typeof(Figure).Equals(component.GetType()))
