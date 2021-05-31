@@ -37,23 +37,53 @@ namespace PaintPatterns.Composite
         /// <param name="group"></param>
         public void Add(Group group)
         {
-            ////go through the group parts which are always shapes convert them to figures add to a group an insert in the first selected shape spot uid/dictionary id
-            //foreach (IComponent item in group.Parts.Values)
-            //{
-            //    //go through the given group values and search for the ones in compositeShapes then remove those and insert the group in the highest id of the selected shapes
-            //    if (typeof(Figure).Equals(item.GetType()))
-            //    {
-            //        //Figure figure = item;
-            //        PaintObjects.Add((Figure)item);
+            var first = group.Parts.First();
+            string firstKey = first.Key;
 
-            //    }
-            //}
+            Group found = PaintObjects.Find(firstKey);
+            List<string> removeList = new List<string>();
+
             foreach (string key in group.Parts.Keys)
+            {
+                //PaintObjects.Remove(key);
+                removeList.Add(key);
+            }
+
+            foreach (string key in removeList)
             {
                 PaintObjects.Remove(key);
             }
 
+            removeList.Clear();
+
             PaintObjects.Add(group);
+        }
+
+        public Composite.Group Find(string uid)
+        {
+            foreach (string key in PaintObjects.Parts.Keys)
+            {
+                //Composite.Group group = null;
+                PaintObjects.Parts.TryGetValue(key, out IComponent component);
+
+
+                if (uid == key)
+                {
+                    return PaintObjects;
+                }
+                else
+                {
+                    if (typeof(Group).Equals(component.GetType()))
+                    {
+                        //PaintObjects.Parts.TryGetValue(key, out IComponent next);
+                        Group sub = (Group)component;
+                        return sub.Find(uid);
+                    }
+                    
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

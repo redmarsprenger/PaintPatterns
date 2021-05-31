@@ -186,9 +186,12 @@ namespace PaintPatterns
 
         public void Group(Stack<Shape> stack)
         {
-            var cmd = new Command.Group(stack);
-            cmd.Execute();
-            composite.Add(cmd.GetGroup());
+            if (stack.Count >= 0)
+            {
+                var cmd = new Command.Group(stack);
+                cmd.Execute();
+                composite.Add(cmd.GetGroup());
+            }
         }
     }
 }

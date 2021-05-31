@@ -47,5 +47,10 @@ namespace PaintPatterns.Composite
         {
             visitor.VisitFigure(this);
         }
+
+        public void Add(Group group)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
