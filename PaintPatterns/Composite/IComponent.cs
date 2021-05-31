@@ -12,5 +12,6 @@ namespace PaintPatterns.Composite
     {
         void WriteContent(StreamWriter sw, int tabs); 
         void Accept(IVisitor visitor);
+        void Add(Group group);
     }
 }

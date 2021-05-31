@@ -48,10 +48,12 @@ namespace PaintPatterns.Composite
                 //PaintObjects.Remove(key);
                 removeList.Add(key);
             }
+
             foreach (string key in removeList)
             {
                 PaintObjects.Remove(key);
             }
+
             removeList.Clear();
 
             PaintObjects.Add(group);

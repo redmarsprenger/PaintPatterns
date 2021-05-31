@@ -17,12 +17,15 @@ namespace PaintPatterns.Composite
         /// </summary>
         public Dictionary<string, IComponent> Parts;
 
+        public bool found;
+
         /// <summary>
         /// initialises a Group object
         /// </summary>
         public Group()
         {
             Parts = new Dictionary<string, IComponent>();
+            found = false;
         }
 
         public Group(Stack<Shape> shapes)
@@ -52,7 +55,21 @@ namespace PaintPatterns.Composite
         /// <param name="group"></param>
         public void Add(Group group)
         {
-            Parts.Add(Parts.Count.ToString(), group);
+            if (found == true)
+            {
+                Parts.Add(Parts.Count.ToString(), group);
+                found = false;
+            }
+            else
+            {
+                foreach (IComponent component in Parts.Values)
+                {
+                    if (typeof(Group).Equals(component.GetType()))
+                    {
+                        component.Add(group);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -132,6 +149,7 @@ namespace PaintPatterns.Composite
             {
                 IComponent item = null;
                 Parts.TryGetValue(key, out item);
+
                 if (typeof(Figure).Equals(item.GetType()))
                 {
                     Figure figure = (Figure)item;
@@ -141,12 +159,14 @@ namespace PaintPatterns.Composite
                         num = key;
                     }
                 }
-                if (typeof(Group).Equals(key.GetType()))
+                if (typeof(Group).Equals(item.GetType()))
                 {
                     Group group = (Group)item;
                     group.Parts.Remove(uid);
+                    //item = group;
                 }
             }
+
             if (num != "")
             {
                 Parts.Remove(num);
@@ -192,12 +212,23 @@ namespace PaintPatterns.Composite
                     //can't use Find from component but putting it in another variable works
                     Group thing = (Group)component;
                     group = thing.Find(uid);
+
+                    //if parts is count 0 it is a newly made group so it is the group that we want
+                    if (group.Parts.Count == 0)
+                    {
+                        //so we return component because that is the whole not edited group
+                        return (Group)component;
+                    }
                 }
                 if (typeof(Figure).Equals(component.GetType()))
                 {
                     if (uid == key)
                     {
-                        return this;
+                        //set found to true so when we need to add a the group we just search for the "found" group and put it in there
+                        found = true;
+                        Group newGroup = new Group();
+                        //return a new group as a identifier of what we need
+                        return newGroup;
                     }
                 }
             }
