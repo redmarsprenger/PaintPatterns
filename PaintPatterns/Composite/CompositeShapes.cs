@@ -39,23 +39,25 @@ namespace PaintPatterns.Composite
         {
             var first = group.Parts.First();
             string firstKey = first.Key;
-
-            Group found = PaintObjects.Find(firstKey);
             List<string> removeList = new List<string>();
 
+            //searches for the group that needs to be edited and changes found to true there
+            Group found = PaintObjects.Find(firstKey);
+
+            //adds everything that needs to be deleted to a list so a mutation error doesn't occur
             foreach (string key in group.Parts.Keys)
             {
-                //PaintObjects.Remove(key);
                 removeList.Add(key);
             }
 
+            //go through list and remove everything
             foreach (string key in removeList)
             {
                 PaintObjects.Remove(key);
             }
-
             removeList.Clear();
 
+            //add all shapes to the found group
             PaintObjects.Add(group);
         }
 
