@@ -55,9 +55,11 @@ namespace PaintPatterns.Composite
         /// <param name="group"></param>
         public void Add(Group group)
         {
+            //check if group is found
             if (found == true)
             {
                 Parts.Add(Parts.Count.ToString(), group);
+                //reset found
                 found = false;
             }
             else
@@ -66,6 +68,7 @@ namespace PaintPatterns.Composite
                 {
                     if (typeof(Group).Equals(component.GetType()))
                     {
+                        //if it is a group go into that and look there
                         component.Add(group);
                     }
                 }
@@ -163,7 +166,6 @@ namespace PaintPatterns.Composite
                 {
                     Group group = (Group)item;
                     group.Parts.Remove(uid);
-                    //item = group;
                 }
             }
 
